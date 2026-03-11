@@ -101,24 +101,36 @@ def ejecutar():
             driver.execute_script("window.scrollBy(0, 1000);")
             time.sleep(10)
 
-        items = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
-        print(f"🔎 Items encontrados: {len(items)}")
+        # 1. Contamos cuántos hay inicialmente
+        items_iniciales = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
+        num_items = len(items_iniciales)
+        print(f"🔎 Items encontrados: {num_items}")
         
         current_state = {}
-        # --- 🛠️ NUEVO BLOQUE DE EXTRACCIÓN A PRUEBA DE FALLOS ---
-        for idx, item in enumerate(items):
+        
+        # --- 🛠️ FIX: BUCLE ANTI-STALE ELEMENT ---
+        for i in range(num_items):
             try:
-                # 1. Sacar el link usando XPath relativo
+                # 2. RE-CONSULTAR el DOM en cada iteración para obtener la versión "fresca" del elemento
+                lista_actualizada = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
+                
+                # Si por alguna razón Mercado Libre borró un elemento mientras iterábamos, nos protegemos
+                if i >= len(lista_actualizada): 
+                    break 
+                    
+                item = lista_actualizada[i]
+                
+                # Sacar el link
                 link = item.find_element(By.XPATH, ".//a").get_attribute("href").split("#")[0]
                 
-                # 2. Sacar el texto (probamos innerText y textContent)
+                # Sacar el texto
                 raw = item.get_attribute("innerText")
                 if not raw or raw.strip() == "":
                     raw = item.get_attribute("textContent")
                 
                 p_fmt, p_val = extraer_precio_limpio(raw, val_uf)
                 
-                # 3. Intentar sacar el título del h2, si falla, usamos fallback
+                # Título
                 try:
                     titulo = item.find_element(By.TAG_NAME, "h2").text
                 except:
@@ -130,10 +142,9 @@ def ejecutar():
                     "precio_raw": p_val
                 }
             except Exception as e:
-                # Si algo falla, ahora sabremos exactamente QUÉ falló y en qué item
-                print(f"⚠️ Error al leer el item {idx}: {type(e).__name__} - {e}")
+                print(f"⚠️ Error al leer el item {i}: {type(e).__name__} - {e}")
                 continue
-        # ---------------------------------------------------------
+        # -----------------------------------------
 
         if os.path.exists(ARCHIVO_BD):
             with open(ARCHIVO_BD, "r") as f: 
@@ -143,10 +154,9 @@ def ejecutar():
 
         nuevos = {k: current_state[k] for k in (set(current_state.keys()) - set(last.keys()))}
         
-        # Si logramos extraer al menos 1 departamento, manda el mail
         if current_state:
             enviar_mail(current_state, nuevos, es_diario)
-            print(f"📧 Mail enviado con éxito. ({len(current_state)} procesados)")
+            print(f"📧 Mail enviado con éxito. ({len(current_state)} procesados de {num_items})")
         else:
             print("❌ El script vio los items, pero falló al extraer su texto/link.")
 
