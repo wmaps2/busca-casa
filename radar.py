@@ -24,6 +24,7 @@ def obtener_uf():
         return 40000.0
 
 def extraer_precio_limpio(texto_raw, valor_uf):
+    if not texto_raw: return "Cons.", 0
     t = texto_raw.replace('\xa0', ' ').replace('\n', ' ')
     uf_m = re.search(r'UF\s*([\d\.,]+)', t, re.I)
     if uf_m:
@@ -61,7 +62,6 @@ def enviar_mail(actuales, nuevos, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    # TEST ACTIVADO PARA FORZAR EL ENVÍO DE CORREO
     es_diario = True 
     val_uf = obtener_uf()
     
@@ -75,7 +75,6 @@ def ejecutar():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
     
     try:
-        # 1. CARGAR DOMINIO BASE PARA INYECTAR COOKIES
         print("🍪 Iniciando sesión con cookies...")
         driver.get("https://www.mercadolibre.cl")
         time.sleep(3)
@@ -85,29 +84,20 @@ def ejecutar():
             try:
                 cookies_list = json.loads(cookies_raw)
                 for cookie in cookies_list:
-                    # Limpiar campos incompatibles con Selenium
                     cookie.pop('sameSite', None)
                     cookie.pop('storeId', None)
-                    try: 
-                        driver.add_cookie(cookie)
-                    except Exception as e: 
-                        pass
+                    try: driver.add_cookie(cookie)
+                    except: pass
                 print("✅ Cookies inyectadas.")
-            except Exception as e:
-                print(f"⚠️ Error al leer el JSON de las cookies: {e}")
-        else:
-            print("⚠️ No se encontró la variable MY_COOKIES en el entorno.")
+            except: pass
         
-        # 2. CARGAR POLÍGONO GEOREFERENCIADO
         print(f"📡 Cargando polígono: {URL_TARGET[:50]}...")
         driver.get(URL_TARGET)
         
-        # Espera activa hasta 40 segundos
         wait = WebDriverWait(driver, 40)
         try:
             wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
         except:
-            print("⚠️ El mapa no cargó items rápido, intentando scroll...")
             driver.execute_script("window.scrollBy(0, 1000);")
             time.sleep(10)
 
@@ -115,18 +105,35 @@ def ejecutar():
         print(f"🔎 Items encontrados: {len(items)}")
         
         current_state = {}
-        for item in items:
+        # --- 🛠️ NUEVO BLOQUE DE EXTRACCIÓN A PRUEBA DE FALLOS ---
+        for idx, item in enumerate(items):
             try:
-                link = item.find_element(By.TAG_NAME, "a").get_attribute("href").split("#")[0]
+                # 1. Sacar el link usando XPath relativo
+                link = item.find_element(By.XPATH, ".//a").get_attribute("href").split("#")[0]
+                
+                # 2. Sacar el texto (probamos innerText y textContent)
                 raw = item.get_attribute("innerText")
+                if not raw or raw.strip() == "":
+                    raw = item.get_attribute("textContent")
+                
                 p_fmt, p_val = extraer_precio_limpio(raw, val_uf)
+                
+                # 3. Intentar sacar el título del h2, si falla, usamos fallback
+                try:
+                    titulo = item.find_element(By.TAG_NAME, "h2").text
+                except:
+                    titulo = raw.split("\n")[0].strip()[:50] if raw else "Propiedad"
+
                 current_state[link] = {
-                    "titulo": raw.split("\n")[0].strip()[:50],
+                    "titulo": titulo,
                     "precio": p_fmt,
                     "precio_raw": p_val
                 }
-            except: 
+            except Exception as e:
+                # Si algo falla, ahora sabremos exactamente QUÉ falló y en qué item
+                print(f"⚠️ Error al leer el item {idx}: {type(e).__name__} - {e}")
                 continue
+        # ---------------------------------------------------------
 
         if os.path.exists(ARCHIVO_BD):
             with open(ARCHIVO_BD, "r") as f: 
@@ -136,11 +143,12 @@ def ejecutar():
 
         nuevos = {k: current_state[k] for k in (set(current_state.keys()) - set(last.keys()))}
         
+        # Si logramos extraer al menos 1 departamento, manda el mail
         if current_state:
             enviar_mail(current_state, nuevos, es_diario)
-            print("📧 Mail enviado con datos reales.")
+            print(f"📧 Mail enviado con éxito. ({len(current_state)} procesados)")
         else:
-            print("❌ El mapa sigue vacío. Revisa si las cookies han expirado o están mal copiadas.")
+            print("❌ El script vio los items, pero falló al extraer su texto/link.")
 
         with open(ARCHIVO_BD, "w") as f: 
             json.dump(current_state, f, indent=4)
