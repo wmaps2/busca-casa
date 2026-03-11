@@ -1,1 +1,17 @@
-{}
+{
+    "https://departamento.mercadolibre.cl/MLC-3733150282-departamento-en-arriendo-de-3-dorm-en-la-reina-_JM": {
+        "titulo": "VISTO",
+        "precio": "$ 1.500.000",
+        "precio_raw": 1500000
+    },
+    "https://departamento.mercadolibre.cl/MLC-3663084636-depto-con-acceso-exclusivo-a-country-club-bajos-g-comunes-_JM": {
+        "titulo": "VISTO",
+        "precio": "$ 1.992.086",
+        "precio_raw": 1992086
+    },
+    "https://departamento.mercadolibre.cl/MLC-3738072438-looff-prop-dpto-4d3b1-bod1-est-_JM": {
+        "titulo": "VISTO",
+        "precio": "$ 1.200.000",
+        "precio_raw": 1200000
+    }
+}
