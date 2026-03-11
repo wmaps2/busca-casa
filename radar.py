@@ -7,8 +7,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# --- ⚙️ CONFIGURACIÓN ---
+# --- ⚙️ CONFIGURACIÓN (Tu polígono original) ---
 EMAIL_USER = "wmaps2@gmail.com"
 PASSWORD_APP = os.getenv("PASSWORD_APP")
 ARCHIVO_BD = "estado_mercado.json"
@@ -32,29 +34,26 @@ def extraer_precio_limpio(texto_raw, valor_uf):
         return f"$ {max(vals):,}".replace(",", "."), max(vals)
     return "Cons.", 0
 
-def generar_tabla_html(propiedades, titulo, color, nuevos_links=None):
-    if not propiedades: return ""
-    props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: x[1].get('precio_raw', 0)))
-    html = f"<h3 style='color:{color}; font-family:Arial;'>{titulo}</h3>"
-    html += '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%; font-family:Arial; font-size:12px;">'
-    html += f'<tr style="background:{color}; color:white;"><th>Estado</th><th>Propiedad</th><th>Precio</th></tr>'
-    for link, info in props_ordenadas.items():
-        es_nuevo = link in (nuevos_links or set())
-        tag = '<b>[NUEVO]</b>' if es_nuevo else 'Stock'
-        html += f"""<tr><td>{tag}</td><td><a href="{link}">{info.get('titulo')}</a></td>
-            <td><b>{info.get('precio')}</b></td></tr>"""
-    return html.replace(",", ".") + "</table><br>"
-
 def enviar_mail(actuales, nuevos, es_diario):
     msg = MIMEMultipart('alternative')
-    status = "REPORTE" if es_diario else "NOVEDADES"
     msg['Subject'] = f"Radar Busca-Casa 🏠: {len(nuevos)} Nuevas | {len(actuales)} Totales"
     msg['From'] = formataddr(("Radar Busca-Casa", EMAIL_USER))
     msg['To'] = EMAIL_USER
-    html = f"<html><body style='font-family:Arial;'><h2>🏠 Radar Busca-Casa</h2>"
-    if nuevos: html += generar_tabla_html(nuevos, "✨ NOVEDADES", "#28a745", set(nuevos.keys()))
-    html += generar_tabla_html(actuales, "📋 INVENTARIO COMPLETO", "#004a99", set(nuevos.keys()))
+    
+    html = f"<html><body style='font-family:Arial;'><h2>🏠 Reporte Georeferenciado</h2>"
+    
+    def generar_tabla(props, titulo, color):
+        if not props: return ""
+        h = f"<h3 style='color:{color};'>{titulo}</h3><table border='1' cellpadding='5' style='border-collapse:collapse; width:100%; font-size:12px;'>"
+        h += "<tr><th>Link</th><th>Precio</th></tr>"
+        for l, i in props.items():
+            h += f"<tr><td><a href='{l}'>{i['titulo']}</a></td><td>{i['precio']}</td></tr>"
+        return h + "</table><br>"
+
+    html += generar_tabla(nuevos, "✨ NOVEDADES", "#28a745")
+    html += generar_tabla(actuales, "📋 TODO EL SECTOR", "#004a99")
     html += "</body></html>"
+    
     msg.attach(MIMEText(html, 'html'))
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as s:
         s.login(EMAIL_USER, PASSWORD_APP)
@@ -67,25 +66,27 @@ def ejecutar():
     opts.add_argument("--headless=new")
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
-    opts.add_argument("--window-size=1920,1080")
-    opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
-    opts.add_argument("--disable-blink-features=AutomationControlled")
-    opts.add_experimental_option("excludeSwitches", ["enable-automation"])
+    opts.add_argument("--window-size=2560,1440") # Resolución más alta para cargar más mapa
+    opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
     
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
-    driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-      "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-    })
     
     try:
-        print(f"📡 Cargando Mercado Libre...")
+        print(f"📡 Cargando polígono georeferenciado...")
         driver.get(URL_TARGET)
-        time.sleep(30)
-        driver.execute_script("window.scrollBy(0, 800);")
-        time.sleep(5)
         
+        # ESPERA ACTIVA: Buscamos un elemento que confirme que el mapa cargó
+        wait = WebDriverWait(driver, 40)
+        try:
+            # Esperamos a que aparezca la lista lateral que acompaña al mapa
+            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
+        except:
+            print("⚠️ El mapa tarda en responder, intentando scroll de emergencia...")
+            driver.execute_script("window.scrollBy(0, 1000);")
+            time.sleep(10)
+
         items = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
-        print(f"🔎 Items encontrados: {len(items)}")
+        print(f"🔎 Items encontrados en el polígono: {len(items)}")
         
         current_state = {}
         for item in items:
@@ -108,13 +109,13 @@ def ejecutar():
         
         if current_state:
             enviar_mail(current_state, nuevos, es_diario)
-            print("📧 Mail enviado con éxito.")
+            print("📧 Mail enviado con datos del polígono.")
         else:
-            print("⚠️ No se detectaron propiedades en esta corrida.")
+            # Si falla, sacamos un log del contenido para debuggear
+            print("❌ El mapa cargó vacío. Contenido detectado:", driver.title)
 
         with open(ARCHIVO_BD, "w") as f: json.dump(current_state, f, indent=4)
-    except Exception as e:
-        print(f"❌ Error durante la ejecución: {e}")
+            
     finally:
         driver.quit()
 
