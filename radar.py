@@ -101,6 +101,7 @@ def enviar_mail(actuales, nuevos, es_diario):
 def ejecutar():
     # TEST ACTIVADO: Última ejecución manual para ver el diseño final
     es_diario = "--daily" in sys.argv
+    es_diario = true
     val_uf = obtener_uf()
 
     opts = Options()
@@ -189,3 +190,4 @@ def ejecutar():
 
 if __name__ == "__main__": 
     ejecutar()
+
