@@ -111,4 +111,58 @@ def ejecutar():
             time.sleep(10)
 
         items_iniciales = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
-        num_items = len(
+        num_items = len(items_iniciales)
+        
+        current_state = {}
+        for i in range(num_items):
+            try:
+                lista_actualizada = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
+                if i >= len(lista_actualizada): break 
+                item = lista_actualizada[i]
+                
+                # --- 🛠️ MEJORA: Búsqueda de enlace robusta ---
+                links = item.find_elements(By.TAG_NAME, "a")
+                if not links:
+                    print(f"⚠️ Item {i} omitido: No se encontró ningún link en el DOM.")
+                    continue
+                # Tomamos el primer link real que apunte a la propiedad
+                link = links[0].get_attribute("href").split("#")[0]
+                
+                raw = item.get_attribute("innerText")
+                if not raw or raw.strip() == "":
+                    raw = item.get_attribute("textContent")
+                
+                p_fmt, p_val = extraer_precio_limpio(raw, val_uf)
+                
+                # --- 🧠 FILTRO INTELIGENTE ---
+                lineas_utiles = [l.strip() for l in raw.split("\n") if l.strip() and l.strip().upper() not in ["VISTO", "CONTACTADO", "PROMOCIONADO", "NUEVO", "RESERVADO"]]
+                titulo = lineas_utiles[0][:60] if lineas_utiles else "Propiedad"
+
+                current_state[link] = {
+                    "titulo": titulo,
+                    "precio": p_fmt,
+                    "precio_raw": p_val
+                }
+            except Exception as e: 
+                print(f"⚠️ Error estructurando item {i}: {e}")
+                continue
+
+        if os.path.exists(ARCHIVO_BD):
+            with open(ARCHIVO_BD, "r") as f: 
+                last = json.load(f)
+        else: 
+            last = {}
+
+        nuevos = {k: current_state[k] for k in (set(current_state.keys()) - set(last.keys()))}
+        
+        if current_state:
+            enviar_mail(current_state, nuevos, es_diario)
+
+        with open(ARCHIVO_BD, "w") as f: 
+            json.dump(current_state, f, indent=4)
+            
+    finally:
+        driver.quit()
+
+if __name__ == "__main__": 
+    ejecutar()
