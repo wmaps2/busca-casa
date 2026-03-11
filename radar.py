@@ -36,24 +36,36 @@ def extraer_precio_limpio(texto_raw, valor_uf):
         return f"$ {max(vals):,}".replace(",", "."), max(vals)
     return "Cons.", 0
 
+def generar_tabla_html(propiedades, titulo, color, nuevos_links=None):
+    if not propiedades: return ""
+    props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: x[1].get('precio_raw', 0)))
+    
+    html = f"<h3 style='color:{color}; font-family:Arial;'>{titulo}</h3>"
+    html += '<table border="1" cellpadding="10" cellspacing="0" style="border-collapse:collapse; width:100%; font-family:Arial; font-size:13px;">'
+    html += f'<tr style="background:{color}; color:white;"><th>Estado</th><th>Propiedad</th><th>Precio</th></tr>'
+    
+    for link, info in props_ordenadas.items():
+        es_nuevo = link in (nuevos_links or set())
+        tag = '<span style="color:#28a745;"><b>✨ NUEVO</b></span>' if es_nuevo else '<span style="color:#6c757d;">Stock</span>'
+        
+        html += f"""<tr>
+            <td style="text-align:center;">{tag}</td>
+            <td><a href="{link}" style="color:#004a99; text-decoration:none;"><b>{info.get('titulo')}</b></a></td>
+            <td style="text-align:right;"><b>{info.get('precio')}</b></td>
+        </tr>"""
+    
+    return html.replace(",", ".") + "</table><br>"
+
 def enviar_mail(actuales, nuevos, es_diario):
     msg = MIMEMultipart('alternative')
     msg['Subject'] = f"Radar Busca-Casa 🏠: {len(nuevos)} Nuevas | {len(actuales)} Totales"
     msg['From'] = formataddr(("Radar Busca-Casa", EMAIL_USER))
     msg['To'] = EMAIL_USER
     
-    html = f"<html><body style='font-family:Arial;'><h2>🏠 Reporte Georeferenciado Cloud</h2>"
-    
-    def generar_tabla(props, titulo, color):
-        if not props: return ""
-        h = f"<h3 style='color:{color};'>{titulo}</h3><table border='1' cellpadding='5' style='border-collapse:collapse; width:100%; font-size:12px;'>"
-        h += "<tr><th>Link</th><th>Precio</th></tr>"
-        for l, i in props.items():
-            h += f"<tr><td><a href='{l}'>{i['titulo']}</a></td><td>{i['precio']}</td></tr>"
-        return h + "</table><br>"
-
-    html += generar_tabla(nuevos, "✨ NOVEDADES", "#28a745")
-    html += generar_tabla(actuales, "📋 INVENTARIO EN POLÍGONO", "#004a99")
+    html = f"<html><body style='font-family:Arial; padding:10px;'><h2>🏠 Radar Busca-Casa Cloud</h2><hr>"
+    if nuevos: 
+        html += generar_tabla_html(nuevos, "✨ NOVEDADES RECIENTES", "#28a745", set(nuevos.keys()))
+    html += generar_tabla_html(actuales, "📋 INVENTARIO EN POLÍGONO", "#004a99", set(nuevos.keys()))
     html += "</body></html>"
     
     msg.attach(MIMEText(html, 'html'))
@@ -62,7 +74,7 @@ def enviar_mail(actuales, nuevos, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    es_diario = True 
+    es_diario = True # Lo mantenemos en True para la última validación
     val_uf = obtener_uf()
     
     opts = Options()
@@ -75,7 +87,6 @@ def ejecutar():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
     
     try:
-        print("🍪 Iniciando sesión con cookies...")
         driver.get("https://www.mercadolibre.cl")
         time.sleep(3)
         
@@ -88,10 +99,8 @@ def ejecutar():
                     cookie.pop('storeId', None)
                     try: driver.add_cookie(cookie)
                     except: pass
-                print("✅ Cookies inyectadas.")
             except: pass
         
-        print(f"📡 Cargando polígono: {URL_TARGET[:50]}...")
         driver.get(URL_TARGET)
         
         wait = WebDriverWait(driver, 40)
@@ -101,72 +110,5 @@ def ejecutar():
             driver.execute_script("window.scrollBy(0, 1000);")
             time.sleep(10)
 
-        # 1. Contamos cuántos hay inicialmente
         items_iniciales = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
-        num_items = len(items_iniciales)
-        print(f"🔎 Items encontrados: {num_items}")
-        
-        current_state = {}
-        
-        # --- 🛠️ FIX: BUCLE ANTI-STALE ELEMENT ---
-        for i in range(num_items):
-            try:
-                # 2. RE-CONSULTAR el DOM en cada iteración para obtener la versión "fresca" del elemento
-                lista_actualizada = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
-                
-                # Si por alguna razón Mercado Libre borró un elemento mientras iterábamos, nos protegemos
-                if i >= len(lista_actualizada): 
-                    break 
-                    
-                item = lista_actualizada[i]
-                
-                # Sacar el link
-                link = item.find_element(By.XPATH, ".//a").get_attribute("href").split("#")[0]
-                
-                # Sacar el texto
-                raw = item.get_attribute("innerText")
-                if not raw or raw.strip() == "":
-                    raw = item.get_attribute("textContent")
-                
-                p_fmt, p_val = extraer_precio_limpio(raw, val_uf)
-                
-                # Título
-                try:
-                    titulo = item.find_element(By.TAG_NAME, "h2").text
-                except:
-                    titulo = raw.split("\n")[0].strip()[:50] if raw else "Propiedad"
-
-                current_state[link] = {
-                    "titulo": titulo,
-                    "precio": p_fmt,
-                    "precio_raw": p_val
-                }
-            except Exception as e:
-                print(f"⚠️ Error al leer el item {i}: {type(e).__name__} - {e}")
-                continue
-        # -----------------------------------------
-
-        if os.path.exists(ARCHIVO_BD):
-            with open(ARCHIVO_BD, "r") as f: 
-                last = json.load(f)
-        else: 
-            last = {}
-
-        nuevos = {k: current_state[k] for k in (set(current_state.keys()) - set(last.keys()))}
-        
-        if current_state:
-            enviar_mail(current_state, nuevos, es_diario)
-            print(f"📧 Mail enviado con éxito. ({len(current_state)} procesados de {num_items})")
-        else:
-            print("❌ El script vio los items, pero falló al extraer su texto/link.")
-
-        with open(ARCHIVO_BD, "w") as f: 
-            json.dump(current_state, f, indent=4)
-            
-    except Exception as e:
-        print(f"❌ Error crítico: {e}")
-    finally:
-        driver.quit()
-
-if __name__ == "__main__": 
-    ejecutar()
+        num_items = len(
