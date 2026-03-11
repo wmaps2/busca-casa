@@ -30,6 +30,7 @@ def calcular_antiguedad(texto):
     
     if "hoy" in t: return 0
     if "ayer" in t: return 1
+    if "esta semana" in t: return 3
     
     numeros = re.findall(r'\d+', t)
     val = int(numeros[0]) if numeros else 1
@@ -43,6 +44,7 @@ def calcular_antiguedad(texto):
 
 # --- 🧠 PARSER AVANZADO DE TEXTO ---
 def parsear_item(raw, valor_uf, item):
+    # Todo el texto a una sola línea para que Regex no se pierda
     t = raw.replace('\xa0', ' ').replace('\n', ' ')
 
     # 1. Extraer Precio
@@ -70,13 +72,23 @@ def parsear_item(raw, valor_uf, item):
     dorm = f"{dorm_m.group(1)}D" if dorm_m else "-"
     ban = f"{ban_m.group(1)}B" if ban_m else "-"
 
-    # 4. Extraer Fecha de Publicación y Edad Numérica
+    # --- 🛠️ FIX: EXTRACCIÓN AGRESIVA DE PUBLICACIÓN ---
     publicado = "--"
-    for linea in raw.split('\n'):
-        if "publicado" in linea.lower():
-            publicado = linea.strip()
-            break
+    
+    # Intento A: Buscar la clase CSS exacta de ML
+    try:
+        fecha_el = item.find_elements(By.CSS_SELECTOR, ".ui-search-item__date")
+        if fecha_el and fecha_el[0].text.strip():
+            publicado = fecha_el[0].text.strip()
+    except: pass
+
+    # Intento B: Si no está la clase CSS, escaneamos con Regex todo el texto
+    if publicado == "--":
+        match = re.search(r'(publicado\s*(?:hoy|ayer|esta semana|hace\s*\d+\s*(?:día|dia|semana|mes|año)s?)|hace\s*\d+\s*(?:día|dia|semana|mes|año)s?)', t, re.I)
+        if match:
+            publicado = match.group(1).strip().capitalize()
             
+    # Calculamos la edad para ordenar la tabla
     dias = calcular_antiguedad(publicado)
 
     # 5. Extraer Título
@@ -93,7 +105,7 @@ def parsear_item(raw, valor_uf, item):
 def generar_tabla_html(propiedades, titulo, color_bg, nuevos_links=None):
     if not propiedades: return ""
     
-    # 🛠️ ORDENAMIENTO: Primero por días de antigüedad, si hay empate, por precio.
+    # ORDENAMIENTO: Primero los más recientes (dias), luego los más baratos (precio_raw)
     props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: (x[1].get('dias', 9999), x[1].get('precio_raw', 0))))
 
     html = f"<h3 style='color:{color_bg}; font-family:Arial;'>{titulo}</h3>"
@@ -133,7 +145,7 @@ def enviar_mail(actuales, nuevos, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    es_diario = True # Mantén esto en True para tu prueba manual, luego cámbialo a: "--daily" in sys.argv
+    es_diario = True # Mantén esto en True para tu prueba manual
     val_uf = obtener_uf()
 
     opts = Options()
@@ -202,7 +214,7 @@ def ejecutar():
                     "m2": m2,
                     "dorm_ban": dorm_ban,
                     "publicado": publicado,
-                    "dias": dias # <--- Guardamos la edad en días para que la tabla pueda ordenar
+                    "dias": dias
                 }
             except Exception:
                 continue
