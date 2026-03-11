@@ -1,7 +1,7 @@
 name: Radar Busca-Casa Cloud
 on:
   schedule:
-    - cron: '0 * * * *' # Corre cada hora
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -9,12 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4 # <--- ACTUALIZADO
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v5 # <--- ACTUALIZADO
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -24,6 +26,7 @@ jobs:
       - name: Run Script
         env:
           PASSWORD_APP: ${{ secrets.PASSWORD_APP }}
+          MY_COOKIES: ${{ secrets.MY_COOKIES }}
         run: |
           HOUR=$(date +%H)
           if [ "$HOUR" == "12" ]; then
