@@ -23,11 +23,29 @@ def obtener_uf():
     except: 
         return 40000.0
 
+# --- 🧮 CALCULADORA DE ANTIGÜEDAD ---
+def calcular_antiguedad(texto):
+    if not texto or texto == "--": return 9999
+    t = texto.lower()
+    
+    if "hoy" in t: return 0
+    if "ayer" in t: return 1
+    
+    numeros = re.findall(r'\d+', t)
+    val = int(numeros[0]) if numeros else 1
+    
+    if "día" in t or "dia" in t: return val
+    if "semana" in t: return val * 7
+    if "mes" in t: return val * 30
+    if "año" in t or "ano" in t: return val * 365
+    
+    return 9999
+
 # --- 🧠 PARSER AVANZADO DE TEXTO ---
 def parsear_item(raw, valor_uf, item):
     t = raw.replace('\xa0', ' ').replace('\n', ' ')
 
-    # 1. Extraer Precio (Detecta UF y convierte a Pesos)
+    # 1. Extraer Precio
     precio_fmt = "Cons."
     precio_val = 0
     uf_m = re.search(r'UF\s*([\d\.,]+)', t, re.I)
@@ -52,24 +70,35 @@ def parsear_item(raw, valor_uf, item):
     dorm = f"{dorm_m.group(1)}D" if dorm_m else "-"
     ban = f"{ban_m.group(1)}B" if ban_m else "-"
 
-    # 4. Extraer Título (Evitando etiquetas de ML)
+    # 4. Extraer Fecha de Publicación y Edad Numérica
+    publicado = "--"
+    for linea in raw.split('\n'):
+        if "publicado" in linea.lower():
+            publicado = linea.strip()
+            break
+            
+    dias = calcular_antiguedad(publicado)
+
+    # 5. Extraer Título
     try:
         titulo = item.find_element(By.TAG_NAME, "h2").text
         if not titulo: raise Exception()
     except:
-        lineas = [l.strip() for l in raw.split("\n") if l.strip() and l.strip().upper() not in ["VISTO", "CONTACTADO", "PROMOCIONADO", "NUEVO", "RESERVADO"]]
+        lineas = [l.strip() for l in raw.split("\n") if l.strip() and l.strip().upper() not in ["VISTO", "CONTACTADO", "PROMOCIONADO", "NUEVO", "RESERVADO"] and "PUBLICADO" not in l.strip().upper()]
         titulo = lineas[0][:60] if lineas else "Propiedad"
 
-    return titulo, precio_fmt, precio_val, m2, f"{dorm} / {ban}"
+    return titulo, precio_fmt, precio_val, m2, f"{dorm} / {ban}", publicado, dias
 
-# --- 🎨 RESTAURAMOS EL DISEÑO ORIGINAL QUE TE GUSTABA ---
+# --- 🎨 DISEÑO HTML Y ORDENAMIENTO ---
 def generar_tabla_html(propiedades, titulo, color_bg, nuevos_links=None):
     if not propiedades: return ""
-    props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: x[1].get('precio_raw', 0)))
+    
+    # 🛠️ ORDENAMIENTO: Primero por días de antigüedad, si hay empate, por precio.
+    props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: (x[1].get('dias', 9999), x[1].get('precio_raw', 0))))
 
     html = f"<h3 style='color:{color_bg}; font-family:Arial;'>{titulo}</h3>"
     html += '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%; font-family:Arial; font-size:12px; text-align:center;">'
-    html += f'<tr style="background:{color_bg}; color:white;"><th style="width:10%;">Estado</th><th style="width:40%; text-align:left;">Propiedad (Link)</th><th style="width:10%;">m²</th><th style="width:15%;">Dorm/Bañ</th><th style="width:25%; text-align:right;">Arriendo Mensual</th></tr>'
+    html += f'<tr style="background:{color_bg}; color:white;"><th style="width:8%;">Estado</th><th style="width:30%; text-align:left;">Propiedad (Link)</th><th style="width:8%;">m²</th><th style="width:12%;">Dorm/Bañ</th><th style="width:17%;">Publicación</th><th style="width:25%; text-align:right;">Arriendo Mensual</th></tr>'
 
     for link, info in props_ordenadas.items():
         es_nuevo = link in (nuevos_links or set())
@@ -80,6 +109,7 @@ def generar_tabla_html(propiedades, titulo, color_bg, nuevos_links=None):
             <td style="text-align:left;"><a href="{link}" style="color:#004a99; text-decoration:none;"><b>{info.get('titulo')}</b></a></td>
             <td>{info.get('m2')}</td>
             <td>{info.get('dorm_ban')}</td>
+            <td style="color:#555;"><i>{info.get('publicado')}</i></td>
             <td style="text-align:right;"><b>{info.get('precio')}</b></td>
         </tr>"""
 
@@ -94,7 +124,7 @@ def enviar_mail(actuales, nuevos, es_diario):
     html = f"<html><body style='font-family:Arial; padding:10px;'><h2>🏠 Reporte Radar Busca-Casa</h2><hr>"
     if nuevos:
         html += generar_tabla_html(nuevos, "✨ NOVEDADES RECIENTES", "#28a745", set(nuevos.keys()))
-    html += generar_tabla_html(actuales, "📋 INVENTARIO COMPLETO", "#004a99", set(nuevos.keys()))
+    html += generar_tabla_html(actuales, "📋 INVENTARIO COMPLETO (Por más reciente)", "#004a99", set(nuevos.keys()))
     html += "</body></html>"
 
     msg.attach(MIMEText(html, 'html'))
@@ -103,7 +133,7 @@ def enviar_mail(actuales, nuevos, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    es_diario = True # Lo mantenemos encendido para tu test
+    es_diario = True # Mantén esto en True para tu prueba manual, luego cámbialo a: "--daily" in sys.argv
     val_uf = obtener_uf()
 
     opts = Options()
@@ -135,7 +165,6 @@ def ejecutar():
         try: wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
         except: pass
 
-        # --- 🛠️ FIX LAZY LOADING: Hacemos scroll profundo para despertar TODOS los items ---
         for _ in range(4):
             driver.execute_script("window.scrollBy(0, 800);")
             time.sleep(1.5)
@@ -150,7 +179,6 @@ def ejecutar():
                 if i >= len(lista_actualizada): break
                 item = lista_actualizada[i]
 
-                # Búsqueda robusta de enlace
                 links = item.find_elements(By.TAG_NAME, "a")
                 if not links: continue
                 link = None
@@ -165,14 +193,16 @@ def ejecutar():
                 if not raw or raw.strip() == "":
                     raw = item.get_attribute("textContent")
 
-                titulo, p_fmt, p_val, m2, dorm_ban = parsear_item(raw, val_uf, item)
+                titulo, p_fmt, p_val, m2, dorm_ban, publicado, dias = parsear_item(raw, val_uf, item)
 
                 current_state[link] = {
                     "titulo": titulo,
                     "precio": p_fmt,
                     "precio_raw": p_val,
                     "m2": m2,
-                    "dorm_ban": dorm_ban
+                    "dorm_ban": dorm_ban,
+                    "publicado": publicado,
+                    "dias": dias # <--- Guardamos la edad en días para que la tabla pueda ordenar
                 }
             except Exception:
                 continue
