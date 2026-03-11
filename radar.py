@@ -23,31 +23,10 @@ def obtener_uf():
     except: 
         return 40000.0
 
-# --- 🧮 CALCULADORA DE ANTIGÜEDAD ---
-def calcular_antiguedad(texto):
-    if not texto or texto == "--": return 9999
-    t = texto.lower()
-    
-    if "hoy" in t: return 0
-    if "ayer" in t: return 1
-    if "esta semana" in t: return 3
-    
-    numeros = re.findall(r'\d+', t)
-    val = int(numeros[0]) if numeros else 1
-    
-    if "día" in t or "dia" in t: return val
-    if "semana" in t: return val * 7
-    if "mes" in t: return val * 30
-    if "año" in t or "ano" in t: return val * 365
-    
-    return 9999
-
-# --- 🧠 PARSER AVANZADO DE TEXTO ---
+# --- 🧠 PARSER DE TEXTO LIMPIO ---
 def parsear_item(raw, valor_uf, item):
-    # Todo el texto a una sola línea para que Regex no se pierda
     t = raw.replace('\xa0', ' ').replace('\n', ' ')
 
-    # 1. Extraer Precio
     precio_fmt = "Cons."
     precio_val = 0
     uf_m = re.search(r'UF\s*([\d\.,]+)', t, re.I)
@@ -62,66 +41,41 @@ def parsear_item(raw, valor_uf, item):
             precio_val = max(vals)
             precio_fmt = f"$ {precio_val:,}".replace(",", ".")
 
-    # 2. Extraer Metros Cuadrados
     m2_m = re.search(r'(\d+)\s*m²', t, re.I)
     m2 = f"{m2_m.group(1)} m²" if m2_m else "--"
 
-    # 3. Extraer Dormitorios y Baños
     dorm_m = re.search(r'(\d+)\s*dorm', t, re.I)
     ban_m = re.search(r'(\d+)\s*baño', t, re.I)
     dorm = f"{dorm_m.group(1)}D" if dorm_m else "-"
     ban = f"{ban_m.group(1)}B" if ban_m else "-"
 
-    # --- 🛠️ FIX: EXTRACCIÓN AGRESIVA DE PUBLICACIÓN ---
-    publicado = "--"
-    
-    # Intento A: Buscar la clase CSS exacta de ML
-    try:
-        fecha_el = item.find_elements(By.CSS_SELECTOR, ".ui-search-item__date")
-        if fecha_el and fecha_el[0].text.strip():
-            publicado = fecha_el[0].text.strip()
-    except: pass
-
-    # Intento B: Si no está la clase CSS, escaneamos con Regex todo el texto
-    if publicado == "--":
-        match = re.search(r'(publicado\s*(?:hoy|ayer|esta semana|hace\s*\d+\s*(?:día|dia|semana|mes|año)s?)|hace\s*\d+\s*(?:día|dia|semana|mes|año)s?)', t, re.I)
-        if match:
-            publicado = match.group(1).strip().capitalize()
-            
-    # Calculamos la edad para ordenar la tabla
-    dias = calcular_antiguedad(publicado)
-
-    # 5. Extraer Título
     try:
         titulo = item.find_element(By.TAG_NAME, "h2").text
         if not titulo: raise Exception()
     except:
-        lineas = [l.strip() for l in raw.split("\n") if l.strip() and l.strip().upper() not in ["VISTO", "CONTACTADO", "PROMOCIONADO", "NUEVO", "RESERVADO"] and "PUBLICADO" not in l.strip().upper()]
+        lineas = [l.strip() for l in raw.split("\n") if l.strip() and l.strip().upper() not in ["VISTO", "CONTACTADO", "PROMOCIONADO", "NUEVO", "RESERVADO"]]
         titulo = lineas[0][:60] if lineas else "Propiedad"
 
-    return titulo, precio_fmt, precio_val, m2, f"{dorm} / {ban}", publicado, dias
+    return titulo, precio_fmt, precio_val, m2, f"{dorm} / {ban}"
 
-# --- 🎨 DISEÑO HTML Y ORDENAMIENTO ---
-def generar_tabla_html(propiedades, titulo, color_bg, nuevos_links=None):
+# --- 🎨 DISEÑO HTML MINIMALISTA (4 COLUMNAS) ---
+def generar_tabla_html(propiedades, titulo, color_bg):
     if not propiedades: return ""
     
-    # ORDENAMIENTO: Primero los más recientes (dias), luego los más baratos (precio_raw)
-    props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: (x[1].get('dias', 9999), x[1].get('precio_raw', 0))))
+    # Ordenado estrictamente por precio (del más barato al más caro)
+    props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: x[1].get('precio_raw', 0)))
 
     html = f"<h3 style='color:{color_bg}; font-family:Arial;'>{titulo}</h3>"
-    html += '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%; font-family:Arial; font-size:12px; text-align:center;">'
-    html += f'<tr style="background:{color_bg}; color:white;"><th style="width:8%;">Estado</th><th style="width:30%; text-align:left;">Propiedad (Link)</th><th style="width:8%;">m²</th><th style="width:12%;">Dorm/Bañ</th><th style="width:17%;">Publicación</th><th style="width:25%; text-align:right;">Arriendo Mensual</th></tr>'
+    html += '<table border="1" cellpadding="10" cellspacing="0" style="border-collapse:collapse; width:100%; font-family:Arial; font-size:13px; text-align:center;">'
+    
+    # Eliminada la columna "Estado" y reasignados los anchos
+    html += f'<tr style="background:{color_bg}; color:white;"><th style="width:50%; text-align:left;">Propiedad (Link)</th><th style="width:10%;">m²</th><th style="width:15%;">Dorm/Bañ</th><th style="width:25%; text-align:right;">Arriendo Mensual</th></tr>'
 
     for link, info in props_ordenadas.items():
-        es_nuevo = link in (nuevos_links or set())
-        tag = '<span style="color:#28a745;"><b>✨ NUEVO</b></span>' if es_nuevo else '<span style="color:#6c757d;">Stock</span>'
-
         html += f"""<tr>
-            <td>{tag}</td>
             <td style="text-align:left;"><a href="{link}" style="color:#004a99; text-decoration:none;"><b>{info.get('titulo')}</b></a></td>
             <td>{info.get('m2')}</td>
             <td>{info.get('dorm_ban')}</td>
-            <td style="color:#555;"><i>{info.get('publicado')}</i></td>
             <td style="text-align:right;"><b>{info.get('precio')}</b></td>
         </tr>"""
 
@@ -135,8 +89,8 @@ def enviar_mail(actuales, nuevos, es_diario):
 
     html = f"<html><body style='font-family:Arial; padding:10px;'><h2>🏠 Reporte Radar Busca-Casa</h2><hr>"
     if nuevos:
-        html += generar_tabla_html(nuevos, "✨ NOVEDADES RECIENTES", "#28a745", set(nuevos.keys()))
-    html += generar_tabla_html(actuales, "📋 INVENTARIO COMPLETO (Por más reciente)", "#004a99", set(nuevos.keys()))
+        html += generar_tabla_html(nuevos, "✨ NOVEDADES RECIENTES", "#28a745")
+    html += generar_tabla_html(actuales, "📋 INVENTARIO COMPLETO", "#004a99")
     html += "</body></html>"
 
     msg.attach(MIMEText(html, 'html'))
@@ -145,7 +99,8 @@ def enviar_mail(actuales, nuevos, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    es_diario = True # Mantén esto en True para tu prueba manual
+    # TEST ACTIVADO: Última ejecución manual para ver el diseño final
+    es_diario = "--daily" in sys.argv
     val_uf = obtener_uf()
 
     opts = Options()
@@ -177,6 +132,7 @@ def ejecutar():
         try: wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
         except: pass
 
+        # Scroll profundo para atrapar el lazy loading (el depa de 1.5M)
         for _ in range(4):
             driver.execute_script("window.scrollBy(0, 800);")
             time.sleep(1.5)
@@ -205,16 +161,14 @@ def ejecutar():
                 if not raw or raw.strip() == "":
                     raw = item.get_attribute("textContent")
 
-                titulo, p_fmt, p_val, m2, dorm_ban, publicado, dias = parsear_item(raw, val_uf, item)
+                titulo, p_fmt, p_val, m2, dorm_ban = parsear_item(raw, val_uf, item)
 
                 current_state[link] = {
                     "titulo": titulo,
                     "precio": p_fmt,
                     "precio_raw": p_val,
                     "m2": m2,
-                    "dorm_ban": dorm_ban,
-                    "publicado": publicado,
-                    "dias": dias
+                    "dorm_ban": dorm_ban
                 }
             except Exception:
                 continue
