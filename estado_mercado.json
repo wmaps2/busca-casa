@@ -2,16 +2,29 @@
     "https://departamento.mercadolibre.cl/MLC-3622818240-departamento-4-piezas-3-banos-2-bodegas-y-2-est-_JM": {
         "titulo": "Departamento 4 Piezas, 3 Ba\u00f1os, 2 Bodegas Y 2 Est",
         "precio": "$ 1.600.000",
-        "precio_raw": 1600000
+        "precio_raw": 1600000,
+        "m2": "100 m\u00b2",
+        "dorm_ban": "4D / 3B"
+    },
+    "https://departamento.mercadolibre.cl/MLC-3733150282-departamento-en-arriendo-de-3-dorm-en-la-reina-_JM": {
+        "titulo": "Departamento En Arriendo De 3 Dorm. En La Reina",
+        "precio": "$ 1.500.000",
+        "precio_raw": 1500000,
+        "m2": "110 m\u00b2",
+        "dorm_ban": "3D / 3B"
     },
     "https://departamento.mercadolibre.cl/MLC-3663084636-depto-con-acceso-exclusivo-a-country-club-bajos-g-comunes-_JM": {
         "titulo": "Depto. Con Acceso Exclusivo A Country Club. Bajos G. Comunes",
-        "precio": "$ 1.992.086",
-        "precio_raw": 1992086
+        "precio": "$ 1.992.086 (UF 50.0)",
+        "precio_raw": 1992086,
+        "m2": "170 m\u00b2",
+        "dorm_ban": "4D / 3B"
     },
     "https://departamento.mercadolibre.cl/MLC-3738072438-looff-prop-dpto-4d3b1-bod1-est-_JM": {
         "titulo": "Looff Prop Dpto 4d/3b/1 Bod/1 Est",
         "precio": "$ 1.200.000",
-        "precio_raw": 1200000
+        "precio_raw": 1200000,
+        "m2": "100 m\u00b2",
+        "dorm_ban": "4D / 3B"
     }
 }
