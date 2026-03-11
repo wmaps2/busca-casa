@@ -61,7 +61,8 @@ def enviar_mail(actuales, nuevos, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    es_diario = "--daily" in sys.argv
+    # es_diario = "--daily" in sys.argv
+    es_diario = True
     val_uf = obtener_uf()
     opts = Options()
     opts.add_argument("--headless=new")
@@ -102,5 +103,6 @@ def ejecutar():
         
         with open(ARCHIVO_BD, "w") as f: json.dump(current_state, f, indent=4)
     finally: driver.quit()
+
 
 if __name__ == "__main__": ejecutar()
