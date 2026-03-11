@@ -1,31 +1,30 @@
-name: Radar Inmobiliario Mensual
+name: Radar Busca-Casa Cloud
 on:
   schedule:
-    - cron: '0 * * * *' # Cada hora (en punto)
-  workflow_dispatch: # Permite correrlo manual desde el botón de GitHub
+    - cron: '0 * * * *' # Corre cada hora
+  workflow_dispatch:
 
 jobs:
-  build:
+  run-radar:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4 # <--- ACTUALIZADO
 
-      - name: Configurar Python
-        uses: actions/setup-python@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5 # <--- ACTUALIZADO
         with:
           python-version: '3.10'
 
-      - name: Instalar dependencias
-        run: |
-          pip install selenium webdriver-manager requests
+      - name: Install Dependencies
+        run: pip install selenium webdriver-manager requests
 
-      - name: Ejecutar Radar
+      - name: Run Script
         env:
-          EMAIL_USER: ${{ secrets.EMAIL_USER }}
           PASSWORD_APP: ${{ secrets.PASSWORD_APP }}
         run: |
-          # Si la hora actual es 12:00 UTC (9:00 AM Chile aprox), mandamos el diario
           HOUR=$(date +%H)
           if [ "$HOUR" == "12" ]; then
             python radar.py --daily
@@ -33,10 +32,10 @@ jobs:
             python radar.py
           fi
 
-      - name: Guardar estado para la próxima hora
+      - name: Save State
         run: |
-          git config --global user.name 'RadarBot'
-          git config --global user.email 'bot@radar.com'
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
           git add estado_mercado.json
-          git commit -m "Actualizar base de datos" || echo "No hay cambios"
+          git commit -m "Update state" || echo "No changes"
           git push
