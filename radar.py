@@ -2,13 +2,7 @@ import smtplib, json, time, os, re, requests, sys
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
 
 # --- ⚙️ CONFIGURACIÓN ---
 EMAIL_USER = "wmaps2@gmail.com"
@@ -54,8 +48,9 @@ def parsear_item(raw, valor_uf, item):
     ban = f"{ban_m.group(1)}B" if ban_m else "-"
 
     try:
-        titulo = item.find_element(By.TAG_NAME, "h2").text
-        if not titulo: raise Exception()
+        titulo_tag = item.find("h2")
+        if not titulo_tag: raise Exception()
+        titulo = titulo_tag.text.strip()
     except:
         lineas = [l.strip() for l in raw.split("\n") if l.strip() and l.strip().upper() not in ["VISTO", "CONTACTADO", "PROMOCIONADO", "NUEVO", "RESERVADO"]]
         titulo = lineas[0][:60] if lineas else "Propiedad"
@@ -80,7 +75,6 @@ def generar_tabla_html(propiedades, titulo, color_bg, url_busqueda):
 
     html += f"</table>"
     html += f"<div style='text-align:right; margin-top:8px; margin-bottom:15px;'><a href='{url_busqueda}' style='color:#004a99; font-family:Arial; font-size:12px; text-decoration:none;'><b>🔗 Link Búsqueda</b></a></div>"
-    
     return html
 
 def enviar_mail(actuales_dict, nuevos_dict, es_diario):
@@ -117,70 +111,44 @@ def enviar_mail(actuales_dict, nuevos_dict, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    # TEST ACTIVADO: Forzamos el envío para validar la API
+    # TEST ACTIVADO
     es_diario = True 
-    print(f"🚀 Iniciando Radar Multi-Categoría (ScraperAPI)... Modo Diario: {es_diario}")
+    print(f"🚀 Iniciando Radar Ligero (BeautifulSoup + ScraperAPI)...")
     val_uf = obtener_uf()
 
-    opts = Options()
-    opts.add_argument("--headless=new")
-    opts.add_argument("--no-sandbox")
-    opts.add_argument("--disable-dev-shm-usage")
-    opts.add_argument("--window-size=2560,1440")
-    opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
-    
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
+    API_KEY = os.getenv("SCRAPER_API_KEY")
+    if not API_KEY:
+        print("❌ Error: No se encontró SCRAPER_API_KEY")
+        return
 
-    try:
-        API_KEY = os.getenv("SCRAPER_API_KEY")
-        if not API_KEY:
-            print("❌ Error: No se encontró SCRAPER_API_KEY. ¿Configuraste el Secret en GitHub?")
-            return
+    current_state = {cat: {} for cat in URLS.keys()}
 
-        current_state = {cat: {} for cat in URLS.keys()}
+    for categoria, url in URLS.items():
+        print(f"\n📡 Solicitando {categoria} a ScraperAPI...")
+        proxy_url = f"http://api.scraperapi.com?api_key={API_KEY}&url={url}&country_code=cl"
+        
+        try:
+            r = requests.get(proxy_url, timeout=60)
+            if r.status_code != 200:
+                print(f"⚠️ Error {r.status_code} al conectar con ScraperAPI.")
+                continue
 
-        # 🔄 ITERAMOS SOBRE EL DICCIONARIO DE URLS CON EL PROXY
-        for categoria, url in URLS.items():
-            print(f"\n📡 Conectando a {categoria} a través de ScraperAPI...")
-            
-            # MAGIA DEL PROXY: Sin render, pero con IPs Premium Residenciales
-            proxy_url = f"http://api.scraperapi.com?api_key={API_KEY}&url={url}&premium=true&country_code=cl"
-            driver.get(proxy_url)
-            
-            # El chismoso para ver qué nos respondió Mercado Libre
-            print(f"📄 Título de la página cargada: {driver.title}")
+            # Magia pura: Parseamos el HTML al instante
+            soup = BeautifulSoup(r.text, 'html.parser')
+            items = soup.select("li.ui-search-layout__item, .ui-search-result__wrapper")
+            print(f"🔎 Items detectados en {categoria}: {len(items)}")
 
-            wait = WebDriverWait(driver, 40)
-            try: wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
-            except: pass
-
-            for _ in range(4):
-                driver.execute_script("window.scrollBy(0, 800);")
-                time.sleep(1.5)
-
-            items_iniciales = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
-            print(f"🔎 Items detectados en {categoria}: {len(items_iniciales)}")
-
-            for i in range(len(items_iniciales)):
+            for item in items:
                 try:
-                    lista_actualizada = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
-                    if i >= len(lista_actualizada): break
-                    item = lista_actualizada[i]
+                    a_tag = item.find("a")
+                    if not a_tag or not a_tag.get("href"): continue
+                    
+                    href = a_tag["href"]
+                    if "mercadolibre.cl" not in href and "mlc" not in href: continue
+                    link = href.split("#")[0]
 
-                    links = item.find_elements(By.TAG_NAME, "a")
-                    if not links: continue
-                    link = None
-                    for a in links:
-                        href = a.get_attribute("href")
-                        if href and ("mercadolibre.cl" in href or "mlc" in href):
-                            link = href.split("#")[0]
-                            break
-                    if not link: continue
-
-                    raw = item.get_attribute("innerText")
-                    if not raw or raw.strip() == "":
-                        raw = item.get_attribute("textContent")
-
+                    # Extraemos el texto visible imitando a Selenium
+                    raw = item.get_text(separator="\n")
                     titulo, p_fmt, p_val, m2, dorm_ban = parsear_item(raw, val_uf, item)
 
                     current_state[categoria][link] = {
@@ -192,39 +160,37 @@ def ejecutar():
                     }
                 except Exception:
                     continue
+        except Exception as e:
+            print(f"⚠️ Error de red procesando {categoria}: {e}")
 
-        if os.path.exists(ARCHIVO_BD):
-            try:
-                with open(ARCHIVO_BD, "r") as f: last = json.load(f)
-                if last and "🏢 DEPARTAMENTOS" not in last and "🏡 CASAS" not in last:
-                    last = {"🏢 DEPARTAMENTOS": last, "🏡 CASAS": {}}
-            except:
-                last = {cat: {} for cat in URLS.keys()}
-        else: 
+    if os.path.exists(ARCHIVO_BD):
+        try:
+            with open(ARCHIVO_BD, "r") as f: last = json.load(f)
+            if last and "🏢 DEPARTAMENTOS" not in last and "🏡 CASAS" not in last:
+                last = {"🏢 DEPARTAMENTOS": last, "🏡 CASAS": {}}
+        except:
             last = {cat: {} for cat in URLS.keys()}
+    else: 
+        last = {cat: {} for cat in URLS.keys()}
 
-        nuevos = {cat: {} for cat in URLS.keys()}
-        hay_novedades = False
+    nuevos = {cat: {} for cat in URLS.keys()}
+    hay_novedades = False
 
-        for categoria in URLS.keys():
-            if categoria not in last: last[categoria] = {}
-            
-            nuevos[categoria] = {k: current_state[categoria][k] for k in (set(current_state[categoria].keys()) - set(last[categoria].keys()))}
-            if nuevos[categoria]: hay_novedades = True
+    for categoria in URLS.keys():
+        if categoria not in last: last[categoria] = {}
+        nuevos[categoria] = {k: current_state[categoria][k] for k in (set(current_state[categoria].keys()) - set(last[categoria].keys()))}
+        if nuevos[categoria]: hay_novedades = True
 
-        total_procesados = sum(len(c) for c in current_state.values())
-        print(f"\n📊 Procesamiento global listo. Totales en radar: {total_procesados}")
+    total_procesados = sum(len(c) for c in current_state.values())
+    print(f"\n📊 Procesamiento global listo. Totales en radar: {total_procesados}")
 
-        if total_procesados > 0 and (hay_novedades or es_diario):
-            enviar_mail(current_state, nuevos, es_diario)
-            print("📧 Correo consolidado enviado con éxito.")
-        else:
-            print("😴 No hay novedades ni es hora del reporte. Guardando silencio.")
+    if total_procesados > 0 and (hay_novedades or es_diario):
+        enviar_mail(current_state, nuevos, es_diario)
+        print("📧 Correo consolidado enviado con éxito.")
+    else:
+        print("😴 No hay novedades ni es hora del reporte. Guardando silencio.")
 
-        with open(ARCHIVO_BD, "w") as f: json.dump(current_state, f, indent=4)
-
-    finally:
-        driver.quit()
+    with open(ARCHIVO_BD, "w") as f: json.dump(current_state, f, indent=4)
 
 if __name__ == "__main__": 
     ejecutar()
