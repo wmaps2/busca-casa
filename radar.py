@@ -23,7 +23,6 @@ def obtener_uf():
     except: 
         return 40000.0
 
-# --- 🧠 PARSER DE TEXTO LIMPIO ---
 def parsear_item(raw, valor_uf, item):
     t = raw.replace('\xa0', ' ').replace('\n', ' ')
 
@@ -58,17 +57,12 @@ def parsear_item(raw, valor_uf, item):
 
     return titulo, precio_fmt, precio_val, m2, f"{dorm} / {ban}"
 
-# --- 🎨 DISEÑO HTML MINIMALISTA (4 COLUMNAS) ---
 def generar_tabla_html(propiedades, titulo, color_bg):
     if not propiedades: return ""
-    
-    # Ordenado estrictamente por precio (del más barato al más caro)
     props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: x[1].get('precio_raw', 0)))
 
     html = f"<h3 style='color:{color_bg}; font-family:Arial;'>{titulo}</h3>"
     html += '<table border="1" cellpadding="10" cellspacing="0" style="border-collapse:collapse; width:100%; font-family:Arial; font-size:13px; text-align:center;">'
-    
-    # Eliminada la columna "Estado" y reasignados los anchos
     html += f'<tr style="background:{color_bg}; color:white;"><th style="width:50%; text-align:left;">Propiedad (Link)</th><th style="width:10%;">m²</th><th style="width:15%;">Dorm/Bañ</th><th style="width:25%; text-align:right;">Arriendo Mensual</th></tr>'
 
     for link, info in props_ordenadas.items():
@@ -83,7 +77,10 @@ def generar_tabla_html(propiedades, titulo, color_bg):
 
 def enviar_mail(actuales, nuevos, es_diario):
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = f"Radar Busca-Casa 🏠: {len(nuevos)} Nuevas | {len(actuales)} Totales"
+    hora_str = time.strftime("%H:%M")
+    tipo = "Diario" if es_diario and not nuevos else "Alerta"
+    
+    msg['Subject'] = f"Radar Busca-Casa 🏠 [{tipo} {hora_str}]: {len(nuevos)} Nuevas | {len(actuales)} Totales"
     msg['From'] = formataddr(("Radar Busca-Casa", EMAIL_USER))
     msg['To'] = EMAIL_USER
 
@@ -99,8 +96,8 @@ def enviar_mail(actuales, nuevos, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    # TEST ACTIVADO: Última ejecución manual para ver el diseño final
-    es_diario = True 
+    es_diario = "--daily" in sys.argv # <--- Ya está en modo Producción
+    print(f"🚀 Iniciando Radar... Modo Diario: {es_diario}")
     val_uf = obtener_uf()
 
     opts = Options()
@@ -113,6 +110,7 @@ def ejecutar():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
 
     try:
+        print("🍪 Inyectando sesión...")
         driver.get("https://www.mercadolibre.cl")
         time.sleep(3)
 
@@ -124,21 +122,26 @@ def ejecutar():
                     cookie.pop('storeId', None)
                     try: driver.add_cookie(cookie)
                     except: pass
-            except: pass
+                print("✅ Cookies cargadas.")
+            except: 
+                print("⚠️ Error leyendo las cookies JSON.")
+        else:
+            print("⚠️ No se encontraron cookies en el entorno.")
 
+        print("📡 Cargando polígono...")
         driver.get(URL_TARGET)
 
         wait = WebDriverWait(driver, 40)
         try: wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
         except: pass
 
-        # Scroll profundo para atrapar el lazy loading (el depa de 1.5M)
         for _ in range(4):
             driver.execute_script("window.scrollBy(0, 800);")
             time.sleep(1.5)
 
         items_iniciales = driver.find_elements(By.CSS_SELECTOR, "li.ui-search-layout__item, .ui-search-result__wrapper")
         num_items = len(items_iniciales)
+        print(f"🔎 Items detectados en el mapa: {num_items}")
 
         current_state = {}
         for i in range(num_items):
@@ -178,9 +181,14 @@ def ejecutar():
         else: last = {}
 
         nuevos = {k: current_state[k] for k in (set(current_state.keys()) - set(last.keys()))}
+        print(f"📊 Procesamiento listo. Nuevos: {len(nuevos)} | Totales: {len(current_state)}")
 
-        if current_state:
+        # --- 🛑 LÓGICA DE ENVÍO ---
+        if current_state and (nuevos or es_diario):
             enviar_mail(current_state, nuevos, es_diario)
+            print("📧 Correo enviado con éxito.")
+        else:
+            print("😴 No hay novedades ni es hora del reporte. Guardando silencio.")
 
         with open(ARCHIVO_BD, "w") as f: json.dump(current_state, f, indent=4)
 
