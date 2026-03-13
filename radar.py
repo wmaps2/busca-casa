@@ -2,9 +2,7 @@ import smtplib, json, time, os, re, requests, sys
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
-
-# Cambiamos el selenium normal por seleniumwire para soportar el Proxy
-from seleniumwire import webdriver
+from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
@@ -119,46 +117,42 @@ def enviar_mail(actuales_dict, nuevos_dict, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    es_diario = True # TEST ACTIVADO
-    print(f"🚀 Iniciando Radar Cloud (Selenium + Proxy Residencial)...")
+    es_diario = True 
+    print(f"🚀 Iniciando Radar Multi-Categoría (Cookies)... Modo Diario: {es_diario}")
     val_uf = obtener_uf()
-
-    API_KEY = os.getenv("SCRAPER_API_KEY")
-    if not API_KEY:
-        print("❌ Error: No se encontró SCRAPER_API_KEY")
-        return
-
-    # --- 🛡️ CONFIGURACIÓN DEL PROXY (El Disfraz) ---
-    proxy_options = {
-        'proxy': {
-            'http': f'http://scraperapi.country_code=cl:{API_KEY}@proxy-server.scraperapi.com:8001',
-            'https': f'http://scraperapi.country_code=cl:{API_KEY}@proxy-server.scraperapi.com:8001',
-            'no_proxy': 'localhost,127.0.0.1'
-        }
-    }
 
     opts = Options()
     opts.add_argument("--headless=new")
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
     opts.add_argument("--window-size=2560,1440")
-    # Ignorar errores de certificado que a veces generan los proxies
-    opts.add_argument('--ignore-certificate-errors')
+    opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
     
-    # Iniciamos SeleniumWire con las opciones del Proxy
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), 
-        options=opts,
-        seleniumwire_options=proxy_options
-    )
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
 
     try:
+        print("🍪 Inyectando sesión...")
+        driver.get("https://www.mercadolibre.cl")
+        time.sleep(3)
+
+        cookies_raw = os.getenv("MY_COOKIES")
+        if cookies_raw:
+            try:
+                for cookie in json.loads(cookies_raw):
+                    cookie.pop('sameSite', None)
+                    cookie.pop('storeId', None)
+                    try: driver.add_cookie(cookie)
+                    except: pass
+                print("✅ Cookies cargadas.")
+            except: 
+                print("⚠️ Error leyendo las cookies JSON.")
+        else:
+            print("⚠️ No se encontraron cookies en el entorno.")
+
         current_state = {cat: {} for cat in URLS.keys()}
 
         for categoria, url in URLS.items():
-            print(f"\n📡 Navegando a {categoria} a través de IP Chilena...")
-            
-            # Selenium ahora entra DIRECTO a ML, pero enrutado por el Proxy
+            print(f"\n📡 Cargando {categoria}...")
             driver.get(url)
 
             wait = WebDriverWait(driver, 40)
