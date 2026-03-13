@@ -78,7 +78,6 @@ def generar_tabla_html(propiedades, titulo, color_bg, url_busqueda):
             <td style="text-align:right;"><b>{info.get('precio')}</b></td>
         </tr>"""
 
-    # --- 🔗 LINK DE BÚSQUEDA AÑADIDO AL FINAL DE LA TABLA ---
     html += f"</table>"
     html += f"<div style='text-align:right; margin-top:8px; margin-bottom:15px;'><a href='{url_busqueda}' style='color:#004a99; font-family:Arial; font-size:12px; text-decoration:none;'><b>🔗 Link Búsqueda</b></a></div>"
     
@@ -118,9 +117,9 @@ def enviar_mail(actuales_dict, nuevos_dict, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    # TEST ACTIVADO: Forzamos el envío para ver las dos categorías y los links
+    # TEST ACTIVADO: Forzamos el envío para validar la API
     es_diario = True 
-    print(f"🚀 Iniciando Radar Multi-Categoría (Cookies)... Modo Diario: {es_diario}")
+    print(f"🚀 Iniciando Radar Multi-Categoría (ScraperAPI)... Modo Diario: {es_diario}")
     val_uf = obtener_uf()
 
     opts = Options()
@@ -133,31 +132,20 @@ def ejecutar():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
 
     try:
-        # 1. INYECTAMOS LAS COOKIES PRIMERO (Base Domain)
-        print("🍪 Inyectando sesión...")
-        driver.get("https://www.mercadolibre.cl")
-        time.sleep(3)
-
-        cookies_raw = os.getenv("MY_COOKIES")
-        if cookies_raw:
-            try:
-                for cookie in json.loads(cookies_raw):
-                    cookie.pop('sameSite', None)
-                    cookie.pop('storeId', None)
-                    try: driver.add_cookie(cookie)
-                    except: pass
-                print("✅ Cookies cargadas.")
-            except: 
-                print("⚠️ Error leyendo las cookies JSON.")
-        else:
-            print("⚠️ No se encontraron cookies en el entorno.")
+        API_KEY = os.getenv("SCRAPER_API_KEY")
+        if not API_KEY:
+            print("❌ Error: No se encontró SCRAPER_API_KEY. ¿Configuraste el Secret en GitHub?")
+            return
 
         current_state = {cat: {} for cat in URLS.keys()}
 
-        # 2. 🔄 ITERAMOS SOBRE EL DICCIONARIO DE URLS
+        # 🔄 ITERAMOS SOBRE EL DICCIONARIO DE URLS CON EL PROXY
         for categoria, url in URLS.items():
-            print(f"\n📡 Cargando {categoria}...")
-            driver.get(url)
+            print(f"\n📡 Conectando a {categoria} a través de ScraperAPI...")
+            
+            # MAGIA DEL PROXY: Le pasamos la URL de ML a ScraperAPI
+            proxy_url = f"http://api.scraperapi.com?api_key={API_KEY}&url={url}&render=true&country_code=cl"
+            driver.get(proxy_url)
 
             wait = WebDriverWait(driver, 40)
             try: wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
@@ -202,11 +190,9 @@ def ejecutar():
                 except Exception:
                     continue
 
-        # --- 🗃️ GESTIÓN DE ESTADO Y MIGRACIÓN ---
         if os.path.exists(ARCHIVO_BD):
             try:
                 with open(ARCHIVO_BD, "r") as f: last = json.load(f)
-                # Script de migración: Si el JSON viejo es plano, lo metemos dentro de Departamentos
                 if last and "🏢 DEPARTAMENTOS" not in last and "🏡 CASAS" not in last:
                     last = {"🏢 DEPARTAMENTOS": last, "🏡 CASAS": {}}
             except:
