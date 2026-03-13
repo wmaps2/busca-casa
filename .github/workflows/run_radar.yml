@@ -25,9 +25,9 @@ jobs:
 
       - name: Run Script
         env:
-          PYTHONUNBUFFERED: 1  # <--- ESTA LÍNEA ES LA MAGIA
+          PYTHONUNBUFFERED: 1
           PASSWORD_APP: ${{ secrets.PASSWORD_APP }}
-          MY_COOKIES: ${{ secrets.MY_COOKIES }}
+          SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
         run: |
           HOUR=$(date +%H)
           if [ "$HOUR" == "12" ]; then
