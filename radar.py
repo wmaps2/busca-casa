@@ -62,7 +62,7 @@ def parsear_item(raw, valor_uf, item):
 
     return titulo, precio_fmt, precio_val, m2, f"{dorm} / {ban}"
 
-def generar_tabla_html(propiedades, titulo, color_bg):
+def generar_tabla_html(propiedades, titulo, color_bg, url_busqueda):
     if not propiedades: return ""
     props_ordenadas = dict(sorted(propiedades.items(), key=lambda x: x[1].get('precio_raw', 0)))
 
@@ -78,7 +78,11 @@ def generar_tabla_html(propiedades, titulo, color_bg):
             <td style="text-align:right;"><b>{info.get('precio')}</b></td>
         </tr>"""
 
-    return html + "</table><br>"
+    # --- 🔗 LINK DE BÚSQUEDA AÑADIDO AL FINAL DE LA TABLA ---
+    html += f"</table>"
+    html += f"<div style='text-align:right; margin-top:8px; margin-bottom:15px;'><a href='{url_busqueda}' style='color:#004a99; font-family:Arial; font-size:12px; text-decoration:none;'><b>🔗 Link Búsqueda</b></a></div>"
+    
+    return html
 
 def enviar_mail(actuales_dict, nuevos_dict, es_diario):
     msg = MIMEMultipart('alternative')
@@ -95,17 +99,16 @@ def enviar_mail(actuales_dict, nuevos_dict, es_diario):
 
     html = f"<html><body style='font-family:Arial; padding:10px;'><h2>🏠 Reporte Radar Busca-Casa</h2><hr>"
     
-    # Ensamblamos el correo dinámicamente por cada categoría
-    for categoria in URLS.keys():
+    for categoria, url_busqueda in URLS.items():
         cat_nuevos = nuevos_dict.get(categoria, {})
         cat_actuales = actuales_dict.get(categoria, {})
         
         if cat_actuales or cat_nuevos:
             html += f"<h2 style='color:#333; margin-top:30px; border-bottom: 2px solid #ccc; padding-bottom: 5px;'>{categoria}</h2>"
             if cat_nuevos:
-                html += generar_tabla_html(cat_nuevos, f"✨ NOVEDADES ({len(cat_nuevos)})", "#28a745")
+                html += generar_tabla_html(cat_nuevos, f"✨ NOVEDADES ({len(cat_nuevos)})", "#28a745", url_busqueda)
             if cat_actuales:
-                html += generar_tabla_html(cat_actuales, f"📋 INVENTARIO COMPLETO ({len(cat_actuales)})", "#004a99")
+                html += generar_tabla_html(cat_actuales, f"📋 INVENTARIO COMPLETO ({len(cat_actuales)})", "#004a99", url_busqueda)
                 
     html += "</body></html>"
 
@@ -115,9 +118,9 @@ def enviar_mail(actuales_dict, nuevos_dict, es_diario):
         s.send_message(msg)
 
 def ejecutar():
-    # TEST ACTIVADO para confirmar el diseño de ambas tablas
+    # TEST ACTIVADO: Forzamos el envío para ver las dos categorías y los links
     es_diario = True 
-    print(f"🚀 Iniciando Radar Multi-Categoría... Modo Diario: {es_diario}")
+    print(f"🚀 Iniciando Radar Multi-Categoría (Cookies)... Modo Diario: {es_diario}")
     val_uf = obtener_uf()
 
     opts = Options()
@@ -125,23 +128,36 @@ def ejecutar():
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
     opts.add_argument("--window-size=2560,1440")
+    opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
     
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
 
     try:
-        API_KEY = os.getenv("SCRAPER_API_KEY")
-        if not API_KEY:
-            print("❌ Error: No se encontró SCRAPER_API_KEY. ¿Configuraste el Secret en GitHub?")
-            return
+        # 1. INYECTAMOS LAS COOKIES PRIMERO (Base Domain)
+        print("🍪 Inyectando sesión...")
+        driver.get("https://www.mercadolibre.cl")
+        time.sleep(3)
+
+        cookies_raw = os.getenv("MY_COOKIES")
+        if cookies_raw:
+            try:
+                for cookie in json.loads(cookies_raw):
+                    cookie.pop('sameSite', None)
+                    cookie.pop('storeId', None)
+                    try: driver.add_cookie(cookie)
+                    except: pass
+                print("✅ Cookies cargadas.")
+            except: 
+                print("⚠️ Error leyendo las cookies JSON.")
+        else:
+            print("⚠️ No se encontraron cookies en el entorno.")
 
         current_state = {cat: {} for cat in URLS.keys()}
 
-        # 🔄 Bucle iterativo sobre todas las categorías
+        # 2. 🔄 ITERAMOS SOBRE EL DICCIONARIO DE URLS
         for categoria, url in URLS.items():
-            print(f"\n📡 Conectando a {categoria} a través de ScraperAPI...")
-            proxy_url = f"http://api.scraperapi.com?api_key={API_KEY}&url={url}&render=true&country_code=cl"
-            
-            driver.get(proxy_url)
+            print(f"\n📡 Cargando {categoria}...")
+            driver.get(url)
 
             wait = WebDriverWait(driver, 40)
             try: wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
@@ -190,7 +206,7 @@ def ejecutar():
         if os.path.exists(ARCHIVO_BD):
             try:
                 with open(ARCHIVO_BD, "r") as f: last = json.load(f)
-                # Script de migración: Si el JSON viejo es plano (sin categorías), lo metemos dentro de Departamentos
+                # Script de migración: Si el JSON viejo es plano, lo metemos dentro de Departamentos
                 if last and "🏢 DEPARTAMENTOS" not in last and "🏡 CASAS" not in last:
                     last = {"🏢 DEPARTAMENTOS": last, "🏡 CASAS": {}}
             except:
