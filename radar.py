@@ -97,7 +97,7 @@ def enviar_mail(actuales, nuevos, es_diario):
 
 def ejecutar():
     es_diario = "--daily" in sys.argv # <--- Ya está en modo Producción
-    es_diario = true
+    es_diario = True
     print(f"🚀 Iniciando Radar... Modo Diario: {es_diario}")
     val_uf = obtener_uf()
 
