@@ -25,6 +25,7 @@ jobs:
 
       - name: Run Script
         env:
+          PYTHONUNBUFFERED: 1  # <--- ESTA LÍNEA ES LA MAGIA
           PASSWORD_APP: ${{ secrets.PASSWORD_APP }}
           MY_COOKIES: ${{ secrets.MY_COOKIES }}
         run: |
