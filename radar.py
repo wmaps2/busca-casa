@@ -143,9 +143,12 @@ def ejecutar():
         for categoria, url in URLS.items():
             print(f"\n📡 Conectando a {categoria} a través de ScraperAPI...")
             
-            # MAGIA DEL PROXY: Le pasamos la URL de ML a ScraperAPI
-            proxy_url = f"http://api.scraperapi.com?api_key={API_KEY}&url={url}&render=true&country_code=cl"
+            # MAGIA DEL PROXY: Sin render, pero con IPs Premium Residenciales
+            proxy_url = f"http://api.scraperapi.com?api_key={API_KEY}&url={url}&premium=true&country_code=cl"
             driver.get(proxy_url)
+            
+            # El chismoso para ver qué nos respondió Mercado Libre
+            print(f"📄 Título de la página cargada: {driver.title}")
 
             wait = WebDriverWait(driver, 40)
             try: wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "li.ui-search-layout__item")))
