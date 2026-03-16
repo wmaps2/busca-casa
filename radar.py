@@ -15,7 +15,7 @@ EMAIL_USER = "wmaps2@gmail.com"
 PASSWORD_APP = os.getenv("PASSWORD_APP")
 ARCHIVO_BD = "estado_mercado.json"
 
-# 🔗 URL DEL GIST (REEMPLAZA ESTO CON TU URL RAW)
+# 🔗 URL DEL GIST (REEMPLAZA ESTO CON TU URL RAW SIN EL HASH)
 URL_RAW_GIST = "https://gist.githubusercontent.com/wmaps/TU_ID_GIST/raw/ml_cookies.json"
 
 # 🕒 HORA DEL REPORTE DIARIO
@@ -30,11 +30,13 @@ def obtener_uf():
     try:
         r = requests.get("https://mindicador.cl/api/uf", timeout=5)
         return r.json()['serie'][0]['valor']
-    except: return 40000.0
+    except: return 40100.0
 
 def parsear_item(raw, valor_uf, item):
     t = raw.replace('\xa0', ' ').replace('\n', ' ')
     precio_fmt, precio_val = "Cons.", 0
+    
+    # Precios
     uf_m = re.search(r'UF\s*([\d\.,]+)', t, re.I)
     if uf_m:
         val = float(uf_m.group(1).replace('.', '').replace(',', '.'))
@@ -47,14 +49,21 @@ def parsear_item(raw, valor_uf, item):
             precio_val = max(vals)
             precio_fmt = f"$ {precio_val:,}".replace(",", ".")
 
-    m2 = f"{re.search(r'(\d+)\s*m²', t, re.I).group(1)} m²" if re.search(r'(\d+)\s*m²', t, re.I) else "--"
-    dorm = f"{re.search(r'(\d+)\s*dorm', t, re.I).group(1)}D" if re.search(r'(\d+)\s*dorm', t, re.I) else "-"
-    ban = f"{re.search(r'(\d+)\s*baño', t, re.I).group(1)}B" if re.search(r'(\d+)\s*baño', t, re.I) else "-"
+    # Regex fuera de f-strings para evitar error de backslash en Python < 3.12
+    m2_match = re.search(r'(\d+)\s*m²', t, re.I)
+    m2 = f"{m2_match.group(1)} m²" if m2_match else "--"
+
+    dorm_match = re.search(r'(\d+)\s*dorm', t, re.I)
+    dorm = f"{dorm_match.group(1)}D" if dorm_match else "-"
+
+    ban_match = re.search(r'(\d+)\s*baño', t, re.I)
+    ban = f"{ban_match.group(1)}B" if ban_match else "-"
 
     try:
         titulo = item.find_element(By.TAG_NAME, "h2").text
     except:
-        titulo = "Propiedad en Vitacura"
+        titulo = "Propiedad"
+        
     return titulo, precio_fmt, precio_val, m2, f"{dorm} / {ban}"
 
 def generar_tabla_html(propiedades, titulo, color_bg, url_busqueda):
@@ -115,7 +124,7 @@ def ejecutar():
     ahora = datetime.datetime.now()
     es_diario = "--daily" in sys.argv or ahora.hour == HORA_REPORTE_FIJO
     
-    print(f"🚀 Iniciando Radar. Hora: {ahora.hour}. Modo Diario: {es_diario}")
+    print(f"🚀 Iniciando Radar. Hora: {ahora.hour}. Reporte completo: {es_diario}")
     val_uf = obtener_uf()
 
     opts = Options()
@@ -133,7 +142,7 @@ def ejecutar():
             r = requests.get(URL_RAW_GIST)
             cookies_json = r.json()
         except Exception as e:
-            print(f"❌ Error crítico cookies: {e}")
+            print(f"❌ Error cookies: {e}")
             return
 
         driver.get("https://www.mercadolibre.cl")
@@ -147,7 +156,7 @@ def ejecutar():
             except: pass
         
         driver.refresh()
-        print("✅ Sesión inyectada exitosamente.")
+        print("✅ Sesión inyectada.")
 
         current_state = {cat: {} for cat in URLS.keys()}
 
@@ -176,10 +185,10 @@ def ejecutar():
 
         if hay_novedades or es_diario:
             enviar_mail(current_state, nuevos, es_diario)
-            print(f"📧 Correo enviado con éxito.")
+            print(f"📧 Correo enviado.")
             with open(ARCHIVO_BD, "w") as f: json.dump(current_state, f, indent=4)
         else:
-            print("😴 Sin novedades. Guardando silencio.")
+            print("😴 Sin novedades.")
 
     finally:
         driver.quit()
