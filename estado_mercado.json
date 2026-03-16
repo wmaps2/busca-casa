@@ -50,6 +50,13 @@
             "precio_raw": 1500000,
             "m2": "130 m\u00b2",
             "dorm_ban": "5D / 4B"
+        },
+        "https://casa.mercadolibre.cl/MLC-1887346551-amplia-casa-familiar-3d-servicio-patio-y-estacionamiento-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.800.000",
+            "precio_raw": 1800000,
+            "m2": "180 m\u00b2",
+            "dorm_ban": "3D / 3B"
         }
     }
 }
