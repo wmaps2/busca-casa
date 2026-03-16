@@ -123,6 +123,7 @@ def enviar_mail(actuales_dict, nuevos_dict, es_diario):
 def ejecutar():
     ahora = datetime.datetime.now()
     es_diario = "--daily" in sys.argv or ahora.hour == HORA_REPORTE_FIJO
+    es_diario = True
     
     print(f"🚀 Iniciando Radar. Hora: {ahora.hour}. Reporte completo: {es_diario}")
     val_uf = obtener_uf()
