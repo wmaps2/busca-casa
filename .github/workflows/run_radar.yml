@@ -27,7 +27,7 @@ jobs:
     - name: Ejecutar Radar
       env:
         PASSWORD_APP: ${{ secrets.PASSWORD_APP }}
-      run: python run_radar.py
+      run: python radar.py
 
     - name: Persistir estado (Guardar lo que ya vimos)
       run: |
