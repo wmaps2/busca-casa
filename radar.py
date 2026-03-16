@@ -15,10 +15,10 @@ EMAIL_USER = "wmaps2@gmail.com"
 PASSWORD_APP = os.getenv("PASSWORD_APP")
 ARCHIVO_BD = "estado_mercado.json"
 
-# 🔗 URL DEL GIST (REEMPLAZA ESTO CON TU URL RAW SIN EL HASH)
-URL_RAW_GIST = "https://gist.githubusercontent.com/wmaps/TU_ID_GIST/raw/ml_cookies.json"
+# 🔗 TU LINK DE GIST (ACTUALIZADO)
+URL_RAW_GIST = "https://gist.githubusercontent.com/wmaps2/a858b601b5eee5e74961903bd784352f/raw/ml_cookies.json"
 
-# 🕒 HORA DEL REPORTE DIARIO
+# 🕒 HORA DEL REPORTE DIARIO (9 AM Santiago)
 HORA_REPORTE_FIJO = 9 
 
 URLS = {
@@ -36,7 +36,7 @@ def parsear_item(raw, valor_uf, item):
     t = raw.replace('\xa0', ' ').replace('\n', ' ')
     precio_fmt, precio_val = "Cons.", 0
     
-    # Precios
+    # Lógica de Precios
     uf_m = re.search(r'UF\s*([\d\.,]+)', t, re.I)
     if uf_m:
         val = float(uf_m.group(1).replace('.', '').replace(',', '.'))
@@ -49,7 +49,7 @@ def parsear_item(raw, valor_uf, item):
             precio_val = max(vals)
             precio_fmt = f"$ {precio_val:,}".replace(",", ".")
 
-    # Regex fuera de f-strings para evitar error de backslash en Python < 3.12
+    # Regex fuera de f-strings para evitar errores de backslash en GitHub (Python 3.10)
     m2_match = re.search(r'(\d+)\s*m²', t, re.I)
     m2 = f"{m2_match.group(1)} m²" if m2_match else "--"
 
@@ -142,12 +142,15 @@ def ejecutar():
             r = requests.get(URL_RAW_GIST)
             cookies_json = r.json()
         except Exception as e:
-            print(f"❌ Error cookies: {e}")
+            print(f"❌ Error crítico JSON/Gist: {e}")
+            # Debug: imprimir lo que recibimos por si falla el parseo
+            print(f"DEBUG - Contenido recibido (primeros 100 char): {r.text[:100]}")
             return
 
         driver.get("https://www.mercadolibre.cl")
         time.sleep(2)
         driver.delete_all_cookies()
+        
         for cookie in cookies_json:
             cookie.pop('sameSite', None)
             cookie.pop('storeId', None)
@@ -156,7 +159,7 @@ def ejecutar():
             except: pass
         
         driver.refresh()
-        print("✅ Sesión inyectada.")
+        print("✅ Sesión inyectada exitosamente.")
 
         current_state = {cat: {} for cat in URLS.keys()}
 
@@ -188,7 +191,7 @@ def ejecutar():
             print(f"📧 Correo enviado.")
             with open(ARCHIVO_BD, "w") as f: json.dump(current_state, f, indent=4)
         else:
-            print("😴 Sin novedades.")
+            print("😴 Sin novedades. No se envía mail.")
 
     finally:
         driver.quit()
