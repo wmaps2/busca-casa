@@ -30,6 +30,13 @@
         }
     },
     "\ud83c\udfe1 CASAS": {
+        "https://casa.mercadolibre.cl/MLC-1888646019-arriendo-casa-en-condominio-5hab-4ba-la-reina-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.700.000",
+            "precio_raw": 1700000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "5D / 4B"
+        },
         "https://casa.mercadolibre.cl/MLC-3733168486-the-grange-school-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.000.000",
@@ -43,13 +50,6 @@
             "precio_raw": 1800000,
             "m2": "200 m\u00b2",
             "dorm_ban": "3D / 3B"
-        },
-        "https://casa.mercadolibre.cl/MLC-1888646019-arriendo-casa-en-condominio-5hab-4ba-la-reina-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.700.000",
-            "precio_raw": 1700000,
-            "m2": "130 m\u00b2",
-            "dorm_ban": "5D / 4B"
         }
     }
 }
