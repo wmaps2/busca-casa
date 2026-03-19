@@ -3,8 +3,8 @@ name: Radar Inmobiliario Vitacura
 on:
   schedule:
     # Corre cada 1 hora (al minuto 0)
-    # En Chile (UTC-3), el reporte de las 09:00 AM se disparará a las 12:00 UTC
-    - cron: '0 * * * *'
+    # En Chile (UTC-3)
+    - cron: '0 10,13,16,19,22,1 * * *'
   workflow_dispatch: # Botón manual para pruebas
 
 jobs:
