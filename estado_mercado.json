@@ -1,5 +1,12 @@
 {
     "\ud83c\udfe2 DEPARTAMENTOS": {
+        "https://departamento.mercadolibre.cl/MLC-1914054081-moderno-depto-en-el-corazon-de-la-reina-156432-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.550.000",
+            "precio_raw": 1550000,
+            "m2": "100 m\u00b2",
+            "dorm_ban": "4D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-3794566778-departamento-en-venta-en-las-condes-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 474.116.468 (UF 11900.0)",
@@ -12,13 +19,6 @@
             "precio": "$ 1.992.086 (UF 50.0)",
             "precio_raw": 1992086,
             "m2": "170 m\u00b2",
-            "dorm_ban": "4D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-1914054081-moderno-depto-en-el-corazon-de-la-reina-156432-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.550.000",
-            "precio_raw": 1550000,
-            "m2": "100 m\u00b2",
             "dorm_ban": "4D / 3B"
         }
     },
