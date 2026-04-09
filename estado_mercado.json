@@ -1,5 +1,12 @@
 {
     "\ud83c\udfe2 DEPARTAMENTOS": {
+        "https://departamento.mercadolibre.cl/MLC-1918878961-departamento-amoblado-en-arriendo-de-3-dorm-en-la-reina-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.600.000",
+            "precio_raw": 1600000,
+            "m2": "115 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-1914054081-moderno-depto-en-el-corazon-de-la-reina-156432-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 1.550.000",
@@ -26,13 +33,6 @@
             "precio": "$ 2.500.000",
             "precio_raw": 2500000,
             "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-1918878961-departamento-amoblado-en-arriendo-de-3-dorm-en-la-reina-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.600.000",
-            "precio_raw": 1600000,
-            "m2": "115 m\u00b2",
             "dorm_ban": "3D / 3B"
         }
     },
