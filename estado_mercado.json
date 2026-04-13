@@ -14,17 +14,24 @@
             "m2": "100 m\u00b2",
             "dorm_ban": "4D / 3B"
         },
+        "https://departamento.mercadolibre.cl/MLC-3864198338-amplio-departamento-excelente-ubicacion-3-dormitorios-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.436.205 (UF 36.0)",
+            "precio_raw": 1436205,
+            "m2": "135 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-3794566778-departamento-en-venta-en-las-condes-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 474.588.421 (UF 11900.0)",
-            "precio_raw": 474588421,
+            "precio": "$ 474.745.859 (UF 11900.0)",
+            "precio_raw": 474745859,
             "m2": "107 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1905550575-gran-terraza-acceso-a-country-club-bajos-g-comunes-4-dorm-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 1.994.068 (UF 50.0)",
-            "precio_raw": 1994068,
+            "precio": "$ 1.994.730 (UF 50.0)",
+            "precio_raw": 1994730,
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
         },
@@ -34,27 +41,20 @@
             "precio_raw": 2500000,
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-3864198338-amplio-departamento-excelente-ubicacion-3-dormitorios-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.435.729 (UF 36.0)",
-            "precio_raw": 1435729,
-            "m2": "135 m\u00b2",
-            "dorm_ban": "3D / 3B"
         }
     },
     "\ud83c\udfe1 CASAS": {
         "https://casa.mercadolibre.cl/MLC-3864073174-acogedora-casa-en-barrio-residencial-comuna-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 1.515.492 (UF 38.0)",
-            "precio_raw": 1515492,
+            "precio": "$ 1.515.995 (UF 38.0)",
+            "precio_raw": 1515995,
             "m2": "110 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.592.289 (UF 65.0)",
-            "precio_raw": 2592289,
+            "precio": "$ 2.593.149 (UF 65.0)",
+            "precio_raw": 2593149,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
         }
