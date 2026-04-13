@@ -34,22 +34,29 @@
             "precio_raw": 2500000,
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3864198338-amplio-departamento-excelente-ubicacion-3-dormitorios-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.435.729 (UF 36.0)",
+            "precio_raw": 1435729,
+            "m2": "135 m\u00b2",
+            "dorm_ban": "3D / 3B"
         }
     },
     "\ud83c\udfe1 CASAS": {
-        "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.592.289 (UF 65.0)",
-            "precio_raw": 2592289,
-            "m2": "180 m\u00b2",
-            "dorm_ban": "5D / 4B"
-        },
         "https://casa.mercadolibre.cl/MLC-3864073174-acogedora-casa-en-barrio-residencial-comuna-la-reina-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 1.515.492 (UF 38.0)",
             "precio_raw": 1515492,
             "m2": "110 m\u00b2",
             "dorm_ban": "3D / 3B"
+        },
+        "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.592.289 (UF 65.0)",
+            "precio_raw": 2592289,
+            "m2": "180 m\u00b2",
+            "dorm_ban": "5D / 4B"
         }
     }
 }
