@@ -28,18 +28,18 @@
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3864198338-amplio-departamento-excelente-ubicacion-3-dormitorios-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.436.682 (UF 36.0)",
-            "precio_raw": 1436682,
-            "m2": "135 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-3794566778-departamento-en-venta-en-las-condes-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 474.903.415 (UF 11900.0)",
             "precio_raw": 474903415,
             "m2": "107 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3864198338-amplio-departamento-excelente-ubicacion-3-dormitorios-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.436.682 (UF 36.0)",
+            "precio_raw": 1436682,
+            "m2": "135 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-3848405640-depto-3d3bsala-de-estar-_JM": {
