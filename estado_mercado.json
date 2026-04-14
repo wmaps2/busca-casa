@@ -1,5 +1,12 @@
 {
     "\ud83c\udfe2 DEPARTAMENTOS": {
+        "https://departamento.mercadolibre.cl/MLC-1905550575-gran-terraza-acceso-a-country-club-bajos-g-comunes-4-dorm-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.994.730 (UF 50.0)",
+            "precio_raw": 1994730,
+            "m2": "170 m\u00b2",
+            "dorm_ban": "4D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-1918878961-departamento-amoblado-en-arriendo-de-3-dorm-en-la-reina-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 1.600.000",
@@ -13,6 +20,13 @@
             "precio_raw": 1550000,
             "m2": "100 m\u00b2",
             "dorm_ban": "4D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3867491740-arriendo-amplio-depto-3d-3b-2e-manquehue-sur-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.500.000",
+            "precio_raw": 2500000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-3864198338-amplio-departamento-excelente-ubicacion-3-dormitorios-_JM": {
             "titulo": "Propiedad",
@@ -28,21 +42,7 @@
             "m2": "107 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-1905550575-gran-terraza-acceso-a-country-club-bajos-g-comunes-4-dorm-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.994.730 (UF 50.0)",
-            "precio_raw": 1994730,
-            "m2": "170 m\u00b2",
-            "dorm_ban": "4D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-3848405640-depto-3d3bsala-de-estar-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.500.000",
-            "precio_raw": 2500000,
-            "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-3867491740-arriendo-amplio-depto-3d-3b-2e-manquehue-sur-las-condes-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.500.000",
             "precio_raw": 2500000,
