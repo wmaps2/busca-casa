@@ -14,6 +14,13 @@
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
         },
+        "https://departamento.mercadolibre.cl/MLC-3893368188-departamento-en-arriendo-de-3-dorm-en-la-reina-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.500.000",
+            "precio_raw": 1500000,
+            "m2": "110 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-1914054081-moderno-depto-en-el-corazon-de-la-reina-156432-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 1.550.000",
@@ -28,14 +35,14 @@
             "m2": "115 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3794566778-departamento-en-venta-en-las-condes-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-3867491740-arriendo-amplio-depto-3d-3b-2e-manquehue-sur-las-condes-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 475.849.465 (UF 11900.0)",
-            "precio_raw": 475849465,
-            "m2": "107 m\u00b2",
+            "precio": "$ 2.500.000",
+            "precio_raw": 2500000,
+            "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3867491740-arriendo-amplio-depto-3d-3b-2e-manquehue-sur-las-condes-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-3878508656-arriendo-departamento-metro-manquehue-apumanque-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.500.000",
             "precio_raw": 2500000,
@@ -47,6 +54,13 @@
             "precio": "$ 2.300.000",
             "precio_raw": 2300000,
             "m2": "140 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3794566778-departamento-en-venta-en-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 475.849.465 (UF 11900.0)",
+            "precio_raw": 475849465,
+            "m2": "107 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-3848405640-depto-de-3d-3b-sala-de-estar-_JM": {
