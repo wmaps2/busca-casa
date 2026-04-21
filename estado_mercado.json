@@ -21,6 +21,13 @@
             "m2": "110 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
+        "https://departamento.mercadolibre.cl/MLC-3894937480-arriendo-departamento-amplio-y-luminoso-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.300.000",
+            "precio_raw": 2300000,
+            "m2": "140 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-1914054081-moderno-depto-en-el-corazon-de-la-reina-156432-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 1.550.000",
@@ -68,13 +75,6 @@
             "precio": "$ 2.300.000",
             "precio_raw": 2300000,
             "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-3894937480-arriendo-departamento-amplio-y-luminoso-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.300.000",
-            "precio_raw": 2300000,
-            "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         }
     },
