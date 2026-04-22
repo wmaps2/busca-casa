@@ -76,22 +76,29 @@
             "precio_raw": 2300000,
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1934116607-arriendo-dpto-3d-3b-vista-despejada-al-country-la-reina-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.800.000",
+            "precio_raw": 1800000,
+            "m2": "110 m\u00b2",
+            "dorm_ban": "3D / 3B"
         }
     },
     "\ud83c\udfe1 CASAS": {
-        "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.400.036 (UF 60.0)",
-            "precio_raw": 2400036,
-            "m2": "180 m\u00b2",
-            "dorm_ban": "5D / 4B"
-        },
         "https://casa.mercadolibre.cl/MLC-3896732776-the-grange-school-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 1.950.000",
             "precio_raw": 1950000,
             "m2": "138 m\u00b2",
             "dorm_ban": "3D / 3B"
+        },
+        "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.400.036 (UF 60.0)",
+            "precio_raw": 2400036,
+            "m2": "180 m\u00b2",
+            "dorm_ban": "5D / 4B"
         }
     }
 }
