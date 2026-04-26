@@ -9,10 +9,17 @@
         },
         "https://departamento.mercadolibre.cl/MLC-1905550575-gran-terraza-acceso-a-country-club-bajos-g-comunes-4-dorm-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.002.686 (UF 50.0)",
-            "precio_raw": 2002686,
+            "precio": "$ 2.003.350 (UF 50.0)",
+            "precio_raw": 2003350,
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1939517149-manquehue-sur-3d-3b-sala-de-estar-2-estac-bodega-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.300.000",
+            "precio_raw": 2300000,
+            "m2": "125 m\u00b2",
+            "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-3894937480-arriendo-departamento-amplio-y-luminoso-_JM": {
             "titulo": "Propiedad",
@@ -81,8 +88,8 @@
     "\ud83c\udfe1 CASAS": {
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.403.223 (UF 60.0)",
-            "precio_raw": 2403223,
+            "precio": "$ 2.404.020 (UF 60.0)",
+            "precio_raw": 2404020,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
         },
