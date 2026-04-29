@@ -16,16 +16,37 @@
         },
         "https://departamento.mercadolibre.cl/MLC-1905550575-gran-terraza-acceso-a-country-club-bajos-g-comunes-4-dorm-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.004.679 (UF 50.0)",
-            "precio_raw": 2004679,
+            "precio": "$ 2.005.344 (UF 50.0)",
+            "precio_raw": 2005344,
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1942703979-hermoso-departamento-amoblado-3d-3b-2e-1bod-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.500.000",
+            "precio_raw": 2500000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1942699565-amplio-depto-las-condes-amoblado-opcional-161059-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.300.000",
+            "precio_raw": 2300000,
+            "m2": "140 m\u00b2",
+            "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1939517149-manquehue-sur-3d-3b-sala-de-estar-2-estac-bodega-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.300.000",
             "precio_raw": 2300000,
             "m2": "125 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1942659691-departamento-en-arriendo-de-3-dorm-en-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.300.000",
+            "precio_raw": 2300000,
+            "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-3878508656-arriendo-departamento-metro-manquehue-apumanque-_JM": {
@@ -70,13 +91,6 @@
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-1934116607-arriendo-dpto-3d3b-estar-vista-despejada-al-country-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.800.000",
-            "precio_raw": 1800000,
-            "m2": "110 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-3867491740-arriendo-amplio-depto-3d-3b-2e-manquehue-sur-las-condes-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.500.000",
@@ -84,11 +98,11 @@
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3848405640-depto-de-3d-3b-sala-de-estar-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-1934116607-arriendo-dpto-3d3b-estar-vista-despejada-al-country-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.300.000",
-            "precio_raw": 2300000,
-            "m2": "130 m\u00b2",
+            "precio": "$ 1.800.000",
+            "precio_raw": 1800000,
+            "m2": "110 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1942662891-departamento-carlos-alvarado-id-170415-_JM": {
@@ -98,14 +112,7 @@
             "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-1942699565-amplio-depto-las-condes-amoblado-opcional-161059-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.300.000",
-            "precio_raw": 2300000,
-            "m2": "140 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-1942659691-departamento-en-arriendo-de-3-dorm-en-las-condes-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-3848405640-depto-de-3d-3b-sala-de-estar-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.300.000",
             "precio_raw": 2300000,
@@ -116,8 +123,8 @@
     "\ud83c\udfe1 CASAS": {
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.405.615 (UF 60.0)",
-            "precio_raw": 2405615,
+            "precio": "$ 2.406.413 (UF 60.0)",
+            "precio_raw": 2406413,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
         },
