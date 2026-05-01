@@ -9,8 +9,8 @@
         },
         "https://departamento.mercadolibre.cl/MLC-1905550575-gran-terraza-acceso-a-country-club-bajos-g-comunes-4-dorm-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.006.009 (UF 50.0)",
-            "precio_raw": 2006009,
+            "precio": "$ 2.006.675 (UF 50.0)",
+            "precio_raw": 2006675,
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
         },
@@ -42,18 +42,18 @@
             "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-1939517149-manquehue-sur-3d-3b-sala-de-estar-2-estac-bodega-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.300.000",
-            "precio_raw": 2300000,
-            "m2": "125 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-3922955674-departamento-amoblado-en-arriendo-las-condes-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.200.000",
             "precio_raw": 2200000,
             "m2": "140 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1939517149-manquehue-sur-3d-3b-sala-de-estar-2-estac-bodega-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.300.000",
+            "precio_raw": 2300000,
+            "m2": "125 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-3878508656-arriendo-departamento-metro-manquehue-apumanque-_JM": {
@@ -90,6 +90,13 @@
             "precio_raw": 1550000,
             "m2": "100 m\u00b2",
             "dorm_ban": "4D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1945121911-se-arrienda-hermoso-y-amplio-depto-en-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.300.000",
+            "precio_raw": 2300000,
+            "m2": "135 m\u00b2",
+            "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1941284299-amplio-departamento-familiar-las-condes-exelente-ubicacion-_JM": {
             "titulo": "Propiedad",
@@ -132,20 +139,13 @@
             "precio_raw": 2300000,
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-1945121911-se-arrienda-hermoso-y-amplio-depto-en-las-condes-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.300.000",
-            "precio_raw": 2300000,
-            "m2": "135 m\u00b2",
-            "dorm_ban": "3D / 3B"
         }
     },
     "\ud83c\udfe1 CASAS": {
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.407.212 (UF 60.0)",
-            "precio_raw": 2407212,
+            "precio": "$ 2.408.010 (UF 60.0)",
+            "precio_raw": 2408010,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
         },
