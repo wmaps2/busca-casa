@@ -1,5 +1,12 @@
 {
     "\ud83c\udfe2 DEPARTAMENTOS": {
+        "https://departamento.mercadolibre.cl/MLC-3873586088-luminoso-amplio-comodo-barrio-residencial-buena-conexion-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.500.000",
+            "precio_raw": 2500000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-3893362522-gran-departamento-en-arriendo-en-las-condes-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.300.000",
@@ -68,13 +75,6 @@
             "precio": "$ 1.500.000",
             "precio_raw": 1500000,
             "m2": "110 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-3873586088-luminoso-amplio-comodo-barrio-residencial-buena-conexion-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.500.000",
-            "precio_raw": 2500000,
-            "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1918878961-departamento-amoblado-en-arriendo-de-3-dorm-en-la-reina-_JM": {
