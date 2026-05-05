@@ -1,5 +1,12 @@
 {
     "\ud83c\udfe2 DEPARTAMENTOS": {
+        "https://departamento.mercadolibre.cl/MLC-1942659691-departamento-en-arriendo-de-3-dorm-en-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.300.000",
+            "precio_raw": 2300000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-3873586088-luminoso-amplio-comodo-barrio-residencial-buena-conexion-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.500.000",
@@ -21,25 +28,11 @@
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3922954778-arriendo-hermoso-depto-amoblado-3d-3b-2est-1bo-las-condes-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-3922954778-arriendo-hermoso-depto-con-o-sin-amoblar-3d-2est-las-condes-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.500.000",
-            "precio_raw": 2500000,
+            "precio": "$ 2.200.000",
+            "precio_raw": 2200000,
             "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-1942659691-departamento-en-arriendo-de-3-dorm-en-las-condes-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.300.000",
-            "precio_raw": 2300000,
-            "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-1942699565-amplio-depto-las-condes-amoblado-opcional-161059-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.300.000",
-            "precio_raw": 2300000,
-            "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1947988845-departamento-en-arriendo-de-3-dorm-en-la-reina-_JM": {
@@ -49,10 +42,10 @@
             "m2": "110 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3922955674-departamento-amoblado-en-arriendo-las-condes-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-1942699565-amplio-depto-las-condes-amoblado-opcional-161059-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.200.000",
-            "precio_raw": 2200000,
+            "precio": "$ 2.300.000",
+            "precio_raw": 2300000,
             "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
@@ -91,19 +84,19 @@
             "m2": "135 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-1946208379-acceso-exclusivo-a-country-club-gran-terraza-4-dorm-servi-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.009.339 (UF 50.0)",
-            "precio_raw": 2009339,
-            "m2": "170 m\u00b2",
-            "dorm_ban": "4D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-1941284299-amplio-departamento-familiar-las-condes-exelente-ubicacion-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.300.000",
             "precio_raw": 2300000,
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1946208379-acceso-exclusivo-a-country-club-gran-terraza-4-dorm-servi-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.005.000 (UF 50.0)",
+            "precio_raw": 2005000,
+            "m2": "170 m\u00b2",
+            "dorm_ban": "4D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-3867491740-arriendo-amplio-depto-3d-3b-2e-manquehue-sur-las-condes-_JM": {
             "titulo": "Propiedad",
@@ -144,8 +137,8 @@
     "\ud83c\udfe1 CASAS": {
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.411.207 (UF 60.0)",
-            "precio_raw": 2411207,
+            "precio": "$ 2.406.000 (UF 60.0)",
+            "precio_raw": 2406000,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
         },
