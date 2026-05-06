@@ -21,17 +21,10 @@
             "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-1942703979-hermoso-departamento-amoblado-3d-3b-2e-1bod-las-condes-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.500.000",
-            "precio_raw": 2500000,
-            "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-3922954778-arriendo-hermoso-depto-con-o-sin-amoblar-3d-2est-las-condes-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.200.000",
-            "precio_raw": 2200000,
+            "precio": "$ 2.100.000",
+            "precio_raw": 2100000,
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
@@ -40,6 +33,27 @@
             "precio": "$ 1.500.000",
             "precio_raw": 1500000,
             "m2": "110 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3941852878-hermoso-departamento-3d-3b-2e-1bod-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.100.000",
+            "precio_raw": 2100000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3941823626-departamento-amoblado-en-arriendo-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.200.000",
+            "precio_raw": 2200000,
+            "m2": "140 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1942703979-hermoso-departamento-amoblado-3d-3b-2e-1bod-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.500.000",
+            "precio_raw": 2500000,
+            "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1942699565-amplio-depto-las-condes-amoblado-opcional-161059-_JM": {
@@ -70,13 +84,6 @@
             "m2": "115 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-1914054081-moderno-depto-en-el-corazon-de-la-reina-156432-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.550.000",
-            "precio_raw": 1550000,
-            "m2": "100 m\u00b2",
-            "dorm_ban": "4D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-1948742111-se-arrienda-hermoso-y-amplio-depto-en-las-condes-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.300.000",
@@ -93,8 +100,8 @@
         },
         "https://departamento.mercadolibre.cl/MLC-1946208379-acceso-exclusivo-a-country-club-gran-terraza-4-dorm-servi-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.005.000 (UF 50.0)",
-            "precio_raw": 2005000,
+            "precio": "$ 2.010.006 (UF 50.0)",
+            "precio_raw": 2010006,
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
         },
@@ -132,15 +139,29 @@
             "precio_raw": 2300000,
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-1949832353-moderno-depto-en-el-corazon-de-la-reina-156432-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.550.000",
+            "precio_raw": 1550000,
+            "m2": "100 m\u00b2",
+            "dorm_ban": "4D / 3B"
         }
     },
     "\ud83c\udfe1 CASAS": {
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.406.000 (UF 60.0)",
-            "precio_raw": 2406000,
+            "precio": "$ 2.412.007 (UF 60.0)",
+            "precio_raw": 2412007,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
+        },
+        "https://casa.mercadolibre.cl/MLC-3941849412-impecable-casa-remodelada-en-la-reina-4d-4b-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.000.000",
+            "precio_raw": 2000000,
+            "m2": "233 m\u00b2",
+            "dorm_ban": "4D / 4B"
         },
         "https://casa.mercadolibre.cl/MLC-3896732776-the-grange-school-_JM": {
             "titulo": "Propiedad",
