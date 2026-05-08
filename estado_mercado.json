@@ -21,13 +21,6 @@
             "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3946833404-arriendo-hermoso-depto-con-o-sin-amoblar-3d-2est-las-condes-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.100.000",
-            "precio_raw": 2100000,
-            "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-1949832353-moderno-depto-en-el-corazon-de-la-reina-156432-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 1.550.000",
@@ -35,24 +28,10 @@
             "m2": "100 m\u00b2",
             "dorm_ban": "4D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-1947988845-departamento-en-arriendo-de-3-dorm-en-la-reina-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.500.000",
-            "precio_raw": 1500000,
-            "m2": "110 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-3941852878-hermoso-departamento-3d-3b-2e-1bod-las-condes-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-1952295375-arriendo-las-condes-3d-3b-2estac-bod-162831-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.100.000",
             "precio_raw": 2100000,
-            "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-3941823626-departamento-amoblado-en-arriendo-las-condes-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.200.000",
-            "precio_raw": 2200000,
             "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
@@ -70,11 +49,11 @@
             "m2": "125 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3878508656-arriendo-departamento-metro-manquehue-apumanque-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-1947988845-departamento-en-arriendo-de-3-dorm-en-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.500.000",
-            "precio_raw": 2500000,
-            "m2": "130 m\u00b2",
+            "precio": "$ 1.500.000",
+            "precio_raw": 1500000,
+            "m2": "110 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1918878961-departamento-amoblado-en-arriendo-de-3-dorm-en-la-reina-_JM": {
@@ -100,8 +79,8 @@
         },
         "https://departamento.mercadolibre.cl/MLC-1946208379-acceso-exclusivo-a-country-club-gran-terraza-4-dorm-servi-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.005.000 (UF 50.0)",
-            "precio_raw": 2005000,
+            "precio": "$ 2.011.339 (UF 50.0)",
+            "precio_raw": 2011339,
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
         },
@@ -126,33 +105,54 @@
             "m2": "140 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
+        "https://departamento.mercadolibre.cl/MLC-3946824742-departamento-en-arriendo-uf-43-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.729.751 (UF 43.0)",
+            "precio_raw": 1729751,
+            "m2": "138 m\u00b2",
+            "dorm_ban": "4D / 4B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3946833404-arriendo-hermoso-depto-con-o-sin-amoblar-3d-2est-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.100.000",
+            "precio_raw": 2100000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3941852878-hermoso-departamento-3d-3b-2e-1bod-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.100.000",
+            "precio_raw": 2100000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3941823626-departamento-amoblado-en-arriendo-las-condes-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.200.000",
+            "precio_raw": 2200000,
+            "m2": "140 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
+        "https://departamento.mercadolibre.cl/MLC-3878508656-arriendo-departamento-metro-manquehue-apumanque-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 2.500.000",
+            "precio_raw": 2500000,
+            "m2": "130 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-3922992934-espctacular-dpto-exclusivo-arriendo-con-compromiso-de-compra-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 1.650.000",
             "precio_raw": 1650000,
             "m2": "107 m\u00b2",
             "dorm_ban": "3D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-3946824742-departamento-en-arriendo-uf-43-las-condes-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.724.300 (UF 43.0)",
-            "precio_raw": 1724300,
-            "m2": "138 m\u00b2",
-            "dorm_ban": "4D / 4B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-1952295375-arriendo-las-condes-3d-3b-2estac-bod-162831-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.100.000",
-            "precio_raw": 2100000,
-            "m2": "140 m\u00b2",
-            "dorm_ban": "3D / 3B"
         }
     },
     "\ud83c\udfe1 CASAS": {
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.406.000 (UF 60.0)",
-            "precio_raw": 2406000,
+            "precio": "$ 2.413.607 (UF 60.0)",
+            "precio_raw": 2413607,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
         },
