@@ -156,19 +156,19 @@
         }
     },
     "\ud83c\udfe1 CASAS": {
-        "https://casa.mercadolibre.cl/MLC-3951918008-gran-oportunidad-excelente-ubicacion-en-calle-tranquila-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.390.000",
-            "precio_raw": 1390000,
-            "m2": "150 m\u00b2",
-            "dorm_ban": "4D / 4B"
-        },
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.414.408 (UF 60.0)",
             "precio_raw": 2414408,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
+        },
+        "https://casa.mercadolibre.cl/MLC-3951918008-gran-oportunidad-excelente-ubicacion-en-calle-tranquila-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.390.000",
+            "precio_raw": 1390000,
+            "m2": "150 m\u00b2",
+            "dorm_ban": "4D / 4B"
         },
         "https://casa.mercadolibre.cl/MLC-3941849412-impecable-casa-remodelada-en-la-reina-4d-4b-_JM": {
             "titulo": "Propiedad",
