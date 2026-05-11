@@ -7,7 +7,7 @@
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3946833404-arriendo-hermoso-depto-con-o-sin-amoblar-3d-2est-las-condes-_JM": {
+        "https://departamento.mercadolibre.cl/MLC-3946833404-arriendo-comodo-depto-con-o-sin-amoblar-3d-3b-2est-l-condes-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.100.000",
             "precio_raw": 2100000,
@@ -30,8 +30,8 @@
         },
         "https://departamento.mercadolibre.cl/MLC-3946824742-departamento-en-arriendo-uf-43-las-condes-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 1.731.047 (UF 43.0)",
-            "precio_raw": 1731047,
+            "precio": "$ 1.731.768 (UF 43.0)",
+            "precio_raw": 1731768,
             "m2": "138 m\u00b2",
             "dorm_ban": "4D / 4B"
         },
@@ -112,6 +112,13 @@
             "m2": "135 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
+        "https://departamento.mercadolibre.cl/MLC-3960444698-arriendo-depto-3d-3b-estar-vista-despejada-country-club-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.700.000",
+            "precio_raw": 1700000,
+            "m2": "110 m\u00b2",
+            "dorm_ban": "3D / 3B"
+        },
         "https://departamento.mercadolibre.cl/MLC-1941284299-amplio-departamento-familiar-las-condes-exelente-ubicacion-_JM": {
             "titulo": "Propiedad",
             "precio": "$ 2.300.000",
@@ -128,17 +135,10 @@
         },
         "https://departamento.mercadolibre.cl/MLC-1946208379-acceso-exclusivo-a-country-club-gran-terraza-4-dorm-servi-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.012.845 (UF 50.0)",
-            "precio_raw": 2012845,
+            "precio": "$ 2.013.684 (UF 50.0)",
+            "precio_raw": 2013684,
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
-        },
-        "https://departamento.mercadolibre.cl/MLC-1934116607-arriendo-dpto-3d3b-estar-vista-despejada-al-country-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.800.000",
-            "precio_raw": 1800000,
-            "m2": "110 m\u00b2",
-            "dorm_ban": "3D / 3B"
         },
         "https://departamento.mercadolibre.cl/MLC-1942662891-departamento-carlos-alvarado-id-170415-_JM": {
             "titulo": "Propiedad",
@@ -158,8 +158,8 @@
     "\ud83c\udfe1 CASAS": {
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.415.414 (UF 60.0)",
-            "precio_raw": 2415414,
+            "precio": "$ 2.416.421 (UF 60.0)",
+            "precio_raw": 2416421,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
         },
