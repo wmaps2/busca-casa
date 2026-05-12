@@ -30,8 +30,8 @@
         },
         "https://departamento.mercadolibre.cl/MLC-3946824742-departamento-en-arriendo-uf-43-las-condes-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 1.731.768 (UF 43.0)",
-            "precio_raw": 1731768,
+            "precio": "$ 1.732.490 (UF 43.0)",
+            "precio_raw": 1732490,
             "m2": "138 m\u00b2",
             "dorm_ban": "4D / 4B"
         },
@@ -126,17 +126,10 @@
             "m2": "130 m\u00b2",
             "dorm_ban": "3D / 3B"
         },
-        "https://departamento.mercadolibre.cl/MLC-3867491740-arriendo-amplio-depto-3d-3b-2e-manquehue-sur-las-condes-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 2.500.000",
-            "precio_raw": 2500000,
-            "m2": "130 m\u00b2",
-            "dorm_ban": "3D / 3B"
-        },
         "https://departamento.mercadolibre.cl/MLC-1946208379-acceso-exclusivo-a-country-club-gran-terraza-4-dorm-servi-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.013.684 (UF 50.0)",
-            "precio_raw": 2013684,
+            "precio": "$ 2.014.523 (UF 50.0)",
+            "precio_raw": 2014523,
             "m2": "170 m\u00b2",
             "dorm_ban": "4D / 3B"
         },
@@ -163,10 +156,17 @@
         }
     },
     "\ud83c\udfe1 CASAS": {
+        "https://casa.mercadolibre.cl/MLC-3964342982-amplia-casa-en-arriendo-y-excelente-ubicacion-y-conectividad-_JM": {
+            "titulo": "Propiedad",
+            "precio": "$ 1.800.000",
+            "precio_raw": 1800000,
+            "m2": "140 m\u00b2",
+            "dorm_ban": "4D / 3B"
+        },
         "https://casa.mercadolibre.cl/MLC-3848160202-amplia-casa-en-condominio-principe-de-gales-la-reina-_JM": {
             "titulo": "Propiedad",
-            "precio": "$ 2.416.421 (UF 60.0)",
-            "precio_raw": 2416421,
+            "precio": "$ 2.417.428 (UF 60.0)",
+            "precio_raw": 2417428,
             "m2": "180 m\u00b2",
             "dorm_ban": "5D / 4B"
         },
@@ -183,13 +183,6 @@
             "precio_raw": 1900000,
             "m2": "138 m\u00b2",
             "dorm_ban": "3D / 3B"
-        },
-        "https://casa.mercadolibre.cl/MLC-3964342982-amplia-casa-en-arriendo-y-excelente-ubicacion-y-conectividad-_JM": {
-            "titulo": "Propiedad",
-            "precio": "$ 1.800.000",
-            "precio_raw": 1800000,
-            "m2": "140 m\u00b2",
-            "dorm_ban": "4D / 3B"
         }
     }
 }
